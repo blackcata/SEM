@@ -11,7 +11,7 @@
         SUBROUTINE SETUP
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, file_name, dir_name
+              ONLY : N, Ny, Nz, Nt, dt, SIGMA, V_b, file_name, dir_name
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, RS
@@ -28,6 +28,10 @@
             !------------------------------------------------------------------!
             Ny = 128
             Nz = 159
+
+            dt    = 5e-3
+            SIGMA = 0.20
+            Nt    = 1000
 
             !------------------------------------------------------------------!
             !                         Allocate variables                       !
