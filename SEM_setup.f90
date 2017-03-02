@@ -1,19 +1,15 @@
 !------------------------------------------------------------------------------!
 !                                                                              !
-!   PROGRAM : SEM_main.f90                                                     !
+!   PROGRAM : LES_Filtering_setup.f90                                          !
 !                                                                              !
-!   PURPOSE : To make inflow generation by using SEM (Synthetic Eddy Method)   !
+!   PURPOSE : Setup for LES-filter the DNS data for turbulent channel flow.    !
 !                                                                              !
-!                                                             2017.03.02 K.Noh !
+!                                                             2016.12.07 K.Noh !
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-        PROGRAM SEM_main
+        SUBROUTINE SETUP
 
-          IMPLICIT NONE
+            IMPLICIT NONE
 
-          CALL SETUP
-          CALL READ_DATA
-          CALL OUTPUT
-
-        END PROGRAM SEM_main
+        END SUBROUTINE SETUP
