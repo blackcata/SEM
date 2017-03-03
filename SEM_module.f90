@@ -63,7 +63,7 @@
           !                   Cholesky Decomposition Function                  !
           !--------------------------------------------------------------------!
           SUBROUTINE CHOL(A,R,N)
-            INTEGER :: N
+            INTEGER,INTENT(IN) :: N
             REAL(KIND=8) :: A(N,N)
             REAL(KIND=8),INTENT(IN) :: R(N,N)
 
@@ -94,4 +94,24 @@
 
           END SUBROUTINE
 
+          !--------------------------------------------------------------------!
+          !                   Cholesky Decomposition Function                  !
+          !--------------------------------------------------------------------!
+          SUBROUTINE MAT_MUL(A,B,AB,N)
+            INTEGER,INTENT(IN) :: N
+            REAL(KIND=8) :: AB(N,N)
+            REAL(KIND=8),INTENT(IN) :: A(N,N),B(N,N)
+
+            INTEGER :: i,j,k
+            AB(1:N,1:N) = 0.0
+
+            DO i = 1,N
+              DO j = 1,N
+                DO k = 1,N
+                  AB(i,j) = AB(i,j) + A(i,k)*B(k,j)
+                END DO
+              END DO
+            END DO
+
+          END SUBROUTINE
         END MODULE

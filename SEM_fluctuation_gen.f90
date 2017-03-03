@@ -17,6 +17,7 @@
               ONLY : Y, Z, U_INLET, V_INLET, W_INLET, SEM_EDDY
 
             IMPLICIT NONE
+            INTRINSIC :: sqrt
 
             INTEGER :: it,j,k
             REAL(KIND=8) :: time_sta, time_end, x0, y0, z0, f
@@ -57,6 +58,10 @@
 
               END DO
             END DO
+
+            U_INLET(1:Ny,1:Nz) = U_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+            V_INLET(1:Ny,1:Nz) = V_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+            W_INLET(1:Ny,1:Nz) = W_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
 
             CALL CPU_TIME(time_end)
             WRITE(*,*) '         FLUCTUATION PROCESS IS COMPLETED           '
