@@ -10,7 +10,7 @@
 
         PROGRAM SEM_main
           USE SEM_module,                                                     &
-            ONLY : Nt
+            ONLY : Nt, time, dt
 
           IMPLICIT NONE
           INTEGER :: it
@@ -21,15 +21,15 @@
           CALL EDDY_SETTING
 
           DO it = 1,Nt
+            time = it * dt
             CALL CPU_TIME(time_sta)
             CALL FLUCT_GEN
             CALL COMB_SLICE
-            ! CALL CONVECT_EDDY
+            CALL CONVECT_EDDY
             CALL CPU_TIME(time_end)
 
             WRITE(*,"(A,I5,2X,A,F10.6,A)") 'SEM for',it,'iteration time : ',time_end - time_sta,' s'
+            CALL OUTPUT
           END DO
-
-          CALL OUTPUT
 
         END PROGRAM SEM_main

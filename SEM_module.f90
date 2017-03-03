@@ -38,7 +38,7 @@
           END TYPE EDDY_CHAR
 
           INTEGER :: N, Ny, Nz, Nt
-          REAL(KIND=8) :: dt, SIGMA, V_b
+          REAL(KIND=8) :: dt, SIGMA, V_b, time
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
 
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z

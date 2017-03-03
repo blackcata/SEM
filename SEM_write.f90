@@ -9,7 +9,7 @@
 !------------------------------------------------------------------------------!
           SUBROUTINE OUTPUT
             USE SEM_module,                                                     &
-              ONLY : Ny, Nz, file_name, dir_name, path_name
+              ONLY : Ny, Nz, time, file_name, dir_name, path_name
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, RS, U_INLET, V_INLET, W_INLET, SEM_EDDY,    &
@@ -19,8 +19,8 @@
               INTEGER :: j,k
               REAL(KIND=8) :: time_sta, time_end
 
-              WRITE(*,*) '----------------------------------------------------'
-              WRITE(*,*) '              WRITING PROCESS STARTED               '
+              ! WRITE(*,*) '----------------------------------------------------'
+              ! WRITE(*,*) '              WRITING PROCESS STARTED               '
               CALL CPU_TIME(time_sta)
               dir_name = 'RESULT'
 
@@ -33,6 +33,8 @@
               OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
               WRITE(100,*) 'VARIABLES = X,Y,U_ins,V_ins,W_ins,U_m,V_m,W_m'
               WRITE(100,"(2(A,I3,2X))")' ZONE  I = ',Nz,' J = ',Ny
+              WRITE(100,*) 'SOLUTIONTIME =',time
+
               DO j = 1,Ny
                 DO k = 1,Nz
 
@@ -42,16 +44,17 @@
 
                 END DO
               END DO
+              WRITE(100,*)
               CLOSE(100)
 
               CALL CPU_TIME(time_end)
 
-              WRITE(*,*) '           WRITING PROCESS IS COMPLETED            '
-              WRITE(*,*) '  Total Writing time : ',time_end - time_sta,' s'
-              WRITE(*,*) '----------------------------------------------------'
-              WRITE(*,*) ''
+              ! WRITE(*,*) '           WRITING PROCESS IS COMPLETED            '
+              ! WRITE(*,*) '  Total Writing time : ',time_end - time_sta,' s'
+              ! WRITE(*,*) '----------------------------------------------------'
+              ! WRITE(*,*) ''
 
-              DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
-              DEALLOCATE(U_COMB,V_COMB,W_COMB)
+              ! DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
+              ! DEALLOCATE(U_COMB,V_COMB,W_COMB)
 
           END SUBROUTINE OUTPUT
