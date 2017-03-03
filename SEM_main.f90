@@ -16,6 +16,7 @@
           CALL READ_DATA
           CALL EDDY_SETTING
           CALL FLUCT_GEN
+          CALL COMB_SLICE
           CALL OUTPUT
 
         END PROGRAM SEM_main

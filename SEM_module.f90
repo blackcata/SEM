@@ -79,7 +79,7 @@
                     A(i,j) = A(i,j) - A(j,k)**2
                   END DO
                   A(i,j) = sqrt(A(i,j))
-                  print*,i,j,A(i,j)
+
                 ELSE
 
                   A(i,j) = R(i,j)
@@ -87,7 +87,7 @@
                     A(i,j) = A(i,j) - A(i,k)*A(j,k)
                   END DO
                   A(i,j) = A(i,j)/A(j,j)
-                  print*,i,j,A(i,j)
+
                 END IF
               END DO
             END DO
@@ -95,19 +95,19 @@
           END SUBROUTINE
 
           !--------------------------------------------------------------------!
-          !                   Cholesky Decomposition Function                  !
+          !                   Matrix multiplication function                   !
           !--------------------------------------------------------------------!
-          SUBROUTINE MAT_MUL(A,B,AB,N)
-            INTEGER,INTENT(IN) :: N
-            REAL(KIND=8) :: AB(N,N)
-            REAL(KIND=8),INTENT(IN) :: A(N,N),B(N,N)
+          SUBROUTINE MAT_MUL(A,B,AB,Ni,Nj,Nk)
+            INTEGER,INTENT(IN) :: Ni,Nj,Nk
+            REAL(KIND=8) :: AB(Ni,Nj)
+            REAL(KIND=8),INTENT(IN) :: A(Ni,Nk),B(Nk,Nj)
 
             INTEGER :: i,j,k
-            AB(1:N,1:N) = 0.0
+            AB(1:Ni,1:Nj) = 0.0
 
-            DO i = 1,N
-              DO j = 1,N
-                DO k = 1,N
+            DO i = 1,Ni
+              DO j = 1,Nj
+                DO k = 1,Nk
                   AB(i,j) = AB(i,j) + A(i,k)*B(k,j)
                 END DO
               END DO

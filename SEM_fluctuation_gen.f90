@@ -17,7 +17,7 @@
               ONLY : Y, Z, U_INLET, V_INLET, W_INLET, SEM_EDDY
 
             IMPLICIT NONE
-            INTRINSIC :: sqrt
+            INTRINSIC :: sqrt, abs
 
             INTEGER :: it,j,k
             REAL(KIND=8) :: time_sta, time_end, x0, y0, z0, f
