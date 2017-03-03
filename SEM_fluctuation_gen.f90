@@ -28,7 +28,6 @@
             DO k = 1,Nz
               DO j = 1,Ny
 
-
                 DO it = 1,N
                   x0 = (0    - SEM_EDDY(it)%X_pos)/SEM_EDDY(it)%eddy_len
                   y0 = (Y(j) - SEM_EDDY(it)%Y_pos)/SEM_EDDY(it)%eddy_len
@@ -47,11 +46,11 @@
                                    SEM_EDDY(it)%X_int*f
 
                     V_INLET(j,k) = V_INLET(j,k) +                               &
-                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *         &
+                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
                                   SEM_EDDY(it)%Y_int*f
 
                     W_INLET(j,k) = W_INLET(j,k) +                               &
-                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *         &
+                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
                                   SEM_EDDY(it)%Z_int*f
                   END IF
                 END DO

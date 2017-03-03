@@ -1,8 +1,9 @@
 F90=ifort
 FCFLAGS=-O3 -qopenmp
 
-TARGET= SEM_CHANNEL
-OBJECT= SEM_module.o SEM_main.o SEM_read.o SEM_write.o SEM_setup.o SEM_eddy_setting.o SEM_fluctuation_gen.o
+TARGET= SEM_PROCESS
+OBJECT= SEM_module.o SEM_main.o SEM_read.o SEM_write.o SEM_setup.o\
+		SEM_eddy_setting.o SEM_fluctuation_gen.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)
@@ -15,4 +16,4 @@ $(TARGET) : $(OBJECT)
 
 clean :
 	rm -f *.o
-	rm SEM_CHANNEL sem_module.mod
+	rm SEM_PROCESS sem_module.mod

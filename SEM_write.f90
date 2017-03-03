@@ -10,7 +10,8 @@
           SUBROUTINE OUTPUT
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U, V, W, RS
+              ONLY : Y, Z, U, V, W, RS, U_INLET, V_INLET, W_INLET, SEM_EDDY,    &
+                     U_COMB, V_COMB, W_COMB
 
               IMPLICIT NONE
               REAL(KIND=8) :: time_sta, time_end
@@ -25,7 +26,8 @@
               WRITE(*,*) '  Total Writing time : ',time_end - time_sta,' s'
               WRITE(*,*) '----------------------------------------------------'
               WRITE(*,*) ''
-              
-              DEALLOCATE(Y,Z,U,V,W,RS)
+
+              DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
+              DEALLOCATE(U_COMB,V_COMB,W_COMB)
 
           END SUBROUTINE OUTPUT
