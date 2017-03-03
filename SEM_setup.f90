@@ -14,10 +14,10 @@
               ONLY : N, Ny, Nz, Nt, dt, SIGMA, V_b, file_name, dir_name
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U, V, W, RS
+              ONLY : Y, Z, U, V, W, RS, SEM_EDDY
 
             IMPLICIT NONE
-
+            INTEGER :: i,j,k
             !------------------------------------------------------------------!
             !                  Make & Initialize Result folder                 !
             !------------------------------------------------------------------!
@@ -34,11 +34,14 @@
             SIGMA = 0.20
             Nt    = 1000
 
+            N  = 1000
+
             !------------------------------------------------------------------!
             !                         Allocate variables                       !
             !------------------------------------------------------------------!
             ALLOCATE( Y(1:Ny),Z(1:Nz) )
             ALLOCATE( U(1:Ny,1:Nz), V(1:Ny,1:Nz), W(1:Ny,1:Nz) )
             ALLOCATE( RS(6,1:Ny,1:Nz) )
+            ALLOCATE( SEM_EDDY(1:N) )
 
         END SUBROUTINE SETUP

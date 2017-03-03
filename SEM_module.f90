@@ -21,6 +21,18 @@
         MODULE SEM_module
 
           IMPLICIT NONE
+
+          TYPE EDDY_CHAR
+            INTEGER :: eddy_num
+            REAL(KIND=8) :: eddy_len
+            REAL(KIND=8) :: X_pos
+            REAL(KIND=8) :: Y_pos
+            REAL(KIND=8) :: Z_pos
+            REAL(KIND=8) :: X_int
+            REAL(KIND=8) :: Y_int
+            REAL(KIND=8) :: Z_int
+          END TYPE EDDY_CHAR
+
           INTEGER :: N, Ny, Nz, Nt
           REAL(KIND=8) :: dt, SIGMA, V_b
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
@@ -28,5 +40,7 @@
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
           REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS
+          TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE :: SEM_EDDY
+
 
         END MODULE
