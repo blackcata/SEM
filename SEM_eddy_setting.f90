@@ -12,7 +12,7 @@
         SUBROUTINE EDDY_SETTING
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, SIGMA, V_b
+              ONLY : N, Ny, Nz, SIGMA
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, SEM_EDDY

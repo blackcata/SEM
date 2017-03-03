@@ -38,7 +38,9 @@
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
 
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
-          REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W
+          REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W,                     &
+                                                     U_INLET,V_INLET,W_INLET,   &
+                                                     U_COMB,V_COMB,W_COMB
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE :: SEM_EDDY
 

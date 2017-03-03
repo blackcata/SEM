@@ -14,7 +14,8 @@
               ONLY : N, Ny, Nz, Nt, dt, SIGMA, V_b, file_name, dir_name
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U, V, W, RS, SEM_EDDY
+              ONLY : Y, Z, U, V, W, RS, SEM_EDDY, U_INLET, V_INLET, W_INLET,    &
+                     U_COMB, V_COMB, W_COMB
 
             IMPLICIT NONE
             INTEGER :: i,j,k
@@ -41,7 +42,38 @@
             !------------------------------------------------------------------!
             ALLOCATE( Y(1:Ny),Z(1:Nz) )
             ALLOCATE( U(1:Ny,1:Nz), V(1:Ny,1:Nz), W(1:Ny,1:Nz) )
+            ALLOCATE( U_INLET(1:Ny,1:Nz),V_INLET(1:Ny,1:Nz),W_INLET(1:Ny,1:Nz) )
+            ALLOCATE( U_COMB(1:Ny,1:Nz),V_COMB(1:Ny,1:Nz),W_COMB(1:Ny,1:Nz) )
             ALLOCATE( RS(6,1:Ny,1:Nz) )
             ALLOCATE( SEM_EDDY(1:N) )
+
+            !------------------------------------------------------------------!
+            !                         Initial Conditions                       !
+            !------------------------------------------------------------------!
+            Y(1:Ny) = 0.0
+            Z(1:Nz) = 0.0
+
+            U(1:Ny,1:Nz) = 0.0
+            V(1:Ny,1:Nz) = 0.0
+            W(1:Ny,1:Nz) = 0.0
+
+            RS(1:6,1:Ny,1:Nz) = 0.0
+
+            U_INLET(1:Ny,1:Nz) = 0.0
+            V_INLET(1:Ny,1:Nz) = 0.0
+            W_INLET(1:Ny,1:Nz) = 0.0
+
+            U_COMB(1:Ny,1:Nz) = 0.0
+            V_COMB(1:Ny,1:Nz) = 0.0
+            W_COMB(1:Ny,1:Nz) = 0.0
+
+            SEM_EDDY(1:N)%eddy_num = 0
+            SEM_EDDY(1:N)%eddy_len = 0.0
+            SEM_EDDY(1:N)%X_pos    = 0.0
+            SEM_EDDY(1:N)%Y_pos    = 0.0
+            SEM_EDDY(1:N)%Z_pos    = 0.0
+            SEM_EDDY(1:N)%X_int    = 0.0
+            SEM_EDDY(1:N)%Y_int    = 0.0
+            SEM_EDDY(1:N)%Z_int    = 0.0
 
         END SUBROUTINE SETUP

@@ -15,6 +15,7 @@
           CALL SETUP
           CALL READ_DATA
           CALL EDDY_SETTING
+          CALL FLUCT_GEN
           CALL OUTPUT
 
         END PROGRAM SEM_main
