@@ -9,16 +9,20 @@
 !------------------------------------------------------------------------------!
 
         PROGRAM SEM_main
+          USE SEM_module,                                                     &
+            ONLY : Nt
 
           IMPLICIT NONE
-
+          INTEGER :: it
           CALL SETUP
           CALL READ_DATA
 
-          CALL EDDY_SETTING
-          CALL FLUCT_GEN
-          CALL COMB_SLICE
-          CALL CONVECT_EDDY
+          DO it = 1,Nt
+            CALL EDDY_SETTING
+            CALL FLUCT_GEN
+            CALL COMB_SLICE
+            CALL CONVECT_EDDY
+          END DO
 
           CALL OUTPUT
 

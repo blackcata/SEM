@@ -10,11 +10,15 @@
 !               N     : The number of eddies                                   !
 !               SIGMA : Eddy length scale                                      !
 !               V_b   : Volume of box including eddies                         !
-!               Nt    : The number of iterations
+!               Nt    : The number of iterations                               !
 !                                                                              !
-!               Y,Z   : Y,Z coordinates                                        !
-!               U,V,W : Mean velocity arrays                                   !
-!               RS    : Reynolds stress                                        !
+!               Y,Z      : Y,Z coordinates                                     !
+!               U,V,W    : Mean velocity arrays                                !
+!               RS       : Reynolds stress                                     !
+!               SEM_EDDY : Each eddies properties including positions,         !
+!                          intensities, length scales.                         !
+!               U,V,W_INLET : Stochastic components of inflow surface          !
+!               U,V,W_COMB  : Reconstructed velocity compoents of inflow       !
 !                                                                              !
 !------------------------------------------------------------------------------!
 
@@ -23,14 +27,14 @@
           IMPLICIT NONE
 
           TYPE EDDY_CHAR
-            INTEGER :: eddy_num
-            REAL(KIND=8) :: eddy_len
-            REAL(KIND=8) :: X_pos
-            REAL(KIND=8) :: Y_pos
-            REAL(KIND=8) :: Z_pos
-            REAL(KIND=8) :: X_int
-            REAL(KIND=8) :: Y_int
-            REAL(KIND=8) :: Z_int
+            INTEGER :: eddy_num       ! Eddy specification number
+            REAL(KIND=8) :: eddy_len  ! Eddy length scale
+            REAL(KIND=8) :: X_pos     ! Eddy's X position
+            REAL(KIND=8) :: Y_pos     ! Eddy's Y position
+            REAL(KIND=8) :: Z_pos     ! Eddy's Z position
+            REAL(KIND=8) :: X_int     ! Eddy's X intensity
+            REAL(KIND=8) :: Y_int     ! Eddy's Y intensity
+            REAL(KIND=8) :: Z_int     ! Eddy's Z intensity
           END TYPE EDDY_CHAR
 
           INTEGER :: N, Ny, Nz, Nt
@@ -42,7 +46,7 @@
                                                      U_INLET,V_INLET,W_INLET,   &
                                                      U_COMB,V_COMB,W_COMB
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS
-          TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE :: SEM_EDDY
+          TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE  :: SEM_EDDY
 
         CONTAINS
           !--------------------------------------------------------------------!
