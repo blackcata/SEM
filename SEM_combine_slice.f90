@@ -14,8 +14,8 @@
               ONLY : Ny, Nz
 
             USE SEM_module,                                                     &
-              ONLY : U_INLET, V_INLET, W_INLET, SEM_EDDY, U, V, W, RS           &
-                     U_COMB, V_COMB, W_COMB,
+              ONLY : U_INLET, V_INLET, W_INLET, SEM_EDDY, U, V, W, RS,          &
+                     U_COMB, V_COMB, W_COMB
 
             USE SEM_module,                                                     &
              ONLY : CHOL,MAT_MUL
@@ -51,6 +51,7 @@
                 U_COMB(j,k) = u_ins(1,1)
                 V_COMB(j,k) = u_ins(2,1)
                 W_COMB(j,k) = u_ins(3,1)
+
               END DO
             END DO
 
