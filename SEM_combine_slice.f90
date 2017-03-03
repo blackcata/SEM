@@ -27,12 +27,12 @@
             REAL(KIND=8) :: time_sta, time_end, R_loc(3,3), A(3,3),             &
                             u_ins(3,1), u_mean(3,1), u_fluc(3,1), u_tmp(3,1)
 
-            WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) '               COMBINE PROCESS STARTED              '
-            CALL CPU_TIME(time_sta)
+            ! WRITE(*,*) '----------------------------------------------------'
+            ! WRITE(*,*) '               COMBINE PROCESS STARTED              '
+            ! CALL CPU_TIME(time_sta)
 
-            DO k = 1,Ny
-              DO j = 1,Nz
+            DO k = 1,Nz
+              DO j = 1,Ny
                 R_loc(1:3,1:3) = 0.0
                 u_ins(1:3,1)   = 0.0
                 u_fluc(1:3,1)  = 0.0
@@ -55,10 +55,10 @@
               END DO
             END DO
 
-            CALL CPU_TIME(time_end)
-            WRITE(*,*) '           COMBINE PROCESS IS COMPLETED             '
-            WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
-            WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) ''
+            ! CALL CPU_TIME(time_end)
+            ! WRITE(*,*) '           COMBINE PROCESS IS COMPLETED             '
+            ! WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
+            ! WRITE(*,*) '----------------------------------------------------'
+            ! WRITE(*,*) ''
 
         END SUBROUTINE COMB_SLICE

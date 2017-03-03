@@ -22,9 +22,9 @@
             INTEGER :: it,j,k
             REAL(KIND=8) :: time_sta, time_end, x0, y0, z0, f
 
-            WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) '             FLUCTUATION PROCESS STARTED            '
-            CALL CPU_TIME(time_sta)
+            ! WRITE(*,*) '----------------------------------------------------'
+            ! WRITE(*,*) '             FLUCTUATION PROCESS STARTED            '
+            ! CALL CPU_TIME(time_sta)
 
             DO k = 1,Nz
               DO j = 1,Ny
@@ -64,9 +64,9 @@
             W_INLET(1:Ny,1:Nz) = W_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
 
             CALL CPU_TIME(time_end)
-            WRITE(*,*) '         FLUCTUATION PROCESS IS COMPLETED           '
-            WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
-            WRITE(*,*) '----------------------------------------------------'
-            WRITE(*,*) ''
+            ! WRITE(*,*) '         FLUCTUATION PROCESS IS COMPLETED           '
+            ! WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
+            ! WRITE(*,*) '----------------------------------------------------'
+            ! WRITE(*,*) ''
 
         END SUBROUTINE FLUCT_GEN
