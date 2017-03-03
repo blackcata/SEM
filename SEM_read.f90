@@ -12,7 +12,7 @@
         SUBROUTINE READ_DATA
 
           USE SEM_module,                                                     &
-            ONLY : N, Ny, Nz, file_name, dir_name, path_name
+            ONLY : N, Ny, Nz, SIGMA, V_b, file_name, dir_name, path_name
 
           USE SEM_module,                                                     &
             ONLY : Y, Z, U, V, W, RS
@@ -20,7 +20,7 @@
           IMPLICIT NONE
 
           INTEGER :: j,k
-          REAL(KIND=8) :: time_sta, time_end, tmp_y, tmp_z
+          REAL(KIND=8) :: time_sta, time_end, tmp_y, tmp_z, S
           CHARACTER(20) :: header
 
           WRITE(*,*) '----------------------------------------------------'
@@ -53,6 +53,9 @@
 
           CLOSE(100)
 
+          S = ( Y(Ny) - Y(1) + 2*SIGMA ) * ( Z(Nz) - Z(1) + 2*SIGMA )
+          V_b = S*2*SIGMA
+          
           CALL CPU_TIME(time_end)
           WRITE(*,*) '            READING PROCESS IS COMPLETED            '
           WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
