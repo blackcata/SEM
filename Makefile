@@ -2,7 +2,7 @@ F90=ifort
 FCFLAGS=-O3 -qopenmp
 
 TARGET= SEM_CHANNEL
-OBJECT= SEM_module.o SEM_main.o SEM_read.o SEM_write.o SEM_setup.o
+OBJECT= SEM_module.o SEM_main.o SEM_read.o SEM_write.o SEM_setup.o SEM_eddy_setting.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)

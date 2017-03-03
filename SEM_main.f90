@@ -14,6 +14,7 @@
 
           CALL SETUP
           CALL READ_DATA
+          CALL EDDY_SETTING
           CALL OUTPUT
 
         END PROGRAM SEM_main

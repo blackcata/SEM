@@ -42,5 +42,16 @@
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE :: SEM_EDDY
 
+        CONTAINS
+          FUNCTION INTENSITY_det(x_int)
+            REAL(KIND=8) :: INTENSITY_det
+            REAL(KIND=8),INTENT(IN) :: x_int
+
+            IF ( x_int > 0 ) THEN
+              INTENSITY_det = 1
+            ELSE
+              INTENSITY_det = -1
+            END IF
+          END FUNCTION INTENSITY_det
 
         END MODULE
