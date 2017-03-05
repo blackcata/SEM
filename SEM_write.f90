@@ -30,24 +30,24 @@
               !----------------------------------------------------------------!
               !                       Outputs for U Slice                      !
               !----------------------------------------------------------------!
-              file_name = '/U_ins.plt'
-              path_name = TRIM(dir_name)//TRIM(file_name)
-
-              OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-              WRITE(100,*) 'VARIABLES = Z,Y,U_ins,V_ins,W_ins'
-              WRITE(100,"(2(A,I3,2X))")' ZONE  I = ',Nz,' J = ',Ny
-              WRITE(100,*) 'SOLUTIONTIME =',time
-
-              DO j = 1,Ny
-                DO k = 1,Nz
-
-                    WRITE(100,"(5F15.9)") Z(k),Y(j),                            &
-                                          U_COMB(j,k),V_COMB(j,k),W_COMB(j,k)
-
-                END DO
-              END DO
-              WRITE(100,*)
-              CLOSE(100)
+              ! file_name = '/U_ins.plt'
+              ! path_name = TRIM(dir_name)//TRIM(file_name)
+              !
+              ! OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
+              ! WRITE(100,*) 'VARIABLES = Z,Y,U_ins,V_ins,W_ins'
+              ! WRITE(100,"(2(A,I3,2X))")' ZONE  I = ',Nz,' J = ',Ny
+              ! WRITE(100,*) 'SOLUTIONTIME =',time
+              !
+              ! DO j = 1,Ny
+              !   DO k = 1,Nz
+              !
+              !       WRITE(100,"(5F15.9)") Z(k),Y(j),                            &
+              !                             U_COMB(j,k),V_COMB(j,k),W_COMB(j,k)
+              !
+              !   END DO
+              ! END DO
+              ! WRITE(100,*)
+              ! CLOSE(100)
 
               !----------------------------------------------------------------!
               !                   Outputs for U mean profiles                  !
@@ -105,22 +105,22 @@
               !----------------------------------------------------------------!
               !                   Outputs for Eddy posoitions                  !
               !----------------------------------------------------------------!
-              file_name = '/EDDY_POS.plt'
-              path_name = TRIM(dir_name)//TRIM(file_name)
-
-              OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-              WRITE(100,*) 'VARIABLES = X,Y,Z'
-              WRITE(100,*) 'ZONE'
-              WRITE(100,*) 'SOLUTIONTIME =',time
-
-              DO it = 1,N
-                WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,             &
-                             SEM_EDDY(it)%Z_pos
-              END DO
-              WRITE(100,*)
-              CLOSE(100)
-
-              CALL CPU_TIME(time_end)
+              ! file_name = '/EDDY_POS.plt'
+              ! path_name = TRIM(dir_name)//TRIM(file_name)
+              !
+              ! OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
+              ! WRITE(100,*) 'VARIABLES = X,Y,Z'
+              ! WRITE(100,*) 'ZONE'
+              ! WRITE(100,*) 'SOLUTIONTIME =',time
+              !
+              ! DO it = 1,N
+              !   WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,             &
+              !                SEM_EDDY(it)%Z_pos
+              ! END DO
+              ! WRITE(100,*)
+              ! CLOSE(100)
+              !
+              ! CALL CPU_TIME(time_end)
 
               ! WRITE(*,*) '           WRITING PROCESS IS COMPLETED            '
               ! WRITE(*,*) '  Total Writing time : ',time_end - time_sta,' s'

@@ -25,6 +25,7 @@
             U_tmp(1:3,1:Ny)   = 0.0
             rms_tmp(1:4,1:Ny) = 0.0
 
+            !$OMP PARALLEL DO private(k,j)
             DO j = 1,Ny
               DO k = 1,Nz
                   U_tmp(1,j) = U_tmp(1,j) + U_COMB(j,k)
@@ -45,5 +46,6 @@
               rms_pr(1:4,j) = ( rms_pr(1:4,j) * (tt - 1) + rms_tmp(1:4,j) )/tt
 
             END DO
+            !OMP END PARALLEL
 
         END SUBROUTINE SEM_STAT

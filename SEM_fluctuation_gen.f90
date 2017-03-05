@@ -26,6 +26,7 @@
             ! WRITE(*,*) '             FLUCTUATION PROCESS STARTED            '
             ! CALL CPU_TIME(time_sta)
 
+            !$OMP PARALLEL DO private(k,j,it,x0,y0,z0,f)
             DO k = 1,Nz
               DO j = 1,Ny
 
@@ -58,6 +59,7 @@
 
               END DO
             END DO
+            !OMP END PARALLEL
 
             U_INLET(1:Ny,1:Nz) = U_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
             V_INLET(1:Ny,1:Nz) = V_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
