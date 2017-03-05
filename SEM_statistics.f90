@@ -20,6 +20,5 @@
             IMPLICIT NONE
             INTEGER :: j,k
 
-
-
+            
         END SUBROUTINE SEM_STAT
