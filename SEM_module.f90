@@ -20,6 +20,10 @@
 !               U,V,W_INLET : Stochastic components of inflow surface          !
 !               U,V,W_COMB  : Reconstructed velocity compoents of inflow       !
 !                                                                              !
+!               U_c    : Local convection velocities                           !
+!               U_pr   : Mean velocities profiles (U,V,W)                      !
+!               rms_pr : Reynolds stress profiles (uu,vv,ww,uv)                !
+!                                                                              !
 !------------------------------------------------------------------------------!
 
         MODULE SEM_module
@@ -44,7 +48,8 @@
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
           REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W,                     &
                                                      U_INLET,V_INLET,W_INLET,   &
-                                                     U_COMB,V_COMB,W_COMB
+                                                     U_COMB,V_COMB,W_COMB,      &
+                                                     U_pr, rms_pr, U_c
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE  :: SEM_EDDY
 

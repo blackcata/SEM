@@ -15,7 +15,7 @@
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, RS, SEM_EDDY, U_INLET, V_INLET, W_INLET,    &
-                     U_COMB, V_COMB, W_COMB
+                     U_COMB, V_COMB, W_COMB, U_pr, rms_pr, U_c
 
             IMPLICIT NONE
             INTEGER :: i,j,k
@@ -46,8 +46,8 @@
             ALLOCATE( U(1:Ny,1:Nz), V(1:Ny,1:Nz), W(1:Ny,1:Nz) )
             ALLOCATE( U_INLET(1:Ny,1:Nz),V_INLET(1:Ny,1:Nz),W_INLET(1:Ny,1:Nz) )
             ALLOCATE( U_COMB(1:Ny,1:Nz),V_COMB(1:Ny,1:Nz),W_COMB(1:Ny,1:Nz) )
-            ALLOCATE( RS(6,1:Ny,1:Nz) )
-            ALLOCATE( SEM_EDDY(1:N) )
+            ALLOCATE( RS(6,1:Ny,1:Nz), U_pr(3,1:Ny), rms_pr(3,1:Ny) )
+            ALLOCATE( SEM_EDDY(1:N), U_c(1:Ny,1:Nz) )
 
             !------------------------------------------------------------------!
             !                         Initial Conditions                       !
@@ -68,6 +68,10 @@
             U_COMB(1:Ny,1:Nz) = 0.0
             V_COMB(1:Ny,1:Nz) = 0.0
             W_COMB(1:Ny,1:Nz) = 0.0
+
+            U_c(1:Ny,1:Nz)   = 0.0
+            U_pr(1:3,1:Ny)   = 0.0
+            rms_pr(1:3,1:Ny) = 0.0
 
             SEM_EDDY(1:N)%eddy_num = 0
             SEM_EDDY(1:N)%eddy_len = 0.0

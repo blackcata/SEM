@@ -9,7 +9,7 @@
 !------------------------------------------------------------------------------!
 
         PROGRAM SEM_main
-          USE SEM_module,                                                     &
+          USE SEM_module,                                                       &
             ONLY : Nt, time, dt
 
           IMPLICIT NONE
@@ -26,9 +26,11 @@
             CALL FLUCT_GEN
             CALL COMB_SLICE
             CALL CONVECT_EDDY
+            CALL SEM_STAT
             CALL CPU_TIME(time_end)
 
-            WRITE(*,"(A,I5,2X,A,F10.6,A)") 'SEM for',it,'iteration time : ',time_end - time_sta,' s'
+            WRITE(*,"(A,I5,2X,A,F10.6,A)")                                      &
+                       'SEM for',it,'iteration time : ',time_end - time_sta,' s'
             CALL OUTPUT
           END DO
 
