@@ -82,8 +82,7 @@
 
               IF ( INT(time/dt) == Nt) THEN
                 OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-                WRITE(100,*)'VARIABLES = Y,uu,uu_exac,vv,vv_exac,ww,ww_exac     &
-                                           uv,uv_exac'
+                WRITE(100,*)'VARIABLES = Y,uu,uu_exac,vv,vv_exac,ww,ww_exac,uv,uv_exac'
 
                 DO j = 1,Ny
                   DO k = 1,Nz
@@ -105,29 +104,29 @@
               !----------------------------------------------------------------!
               !                   Outputs for Eddy posoitions                  !
               !----------------------------------------------------------------!
-              ! file_name = '/EDDY_POS.plt'
-              ! path_name = TRIM(dir_name)//TRIM(file_name)
-              !
-              ! OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-              ! WRITE(100,*) 'VARIABLES = X,Y,Z'
-              ! WRITE(100,*) 'ZONE'
-              ! WRITE(100,*) 'SOLUTIONTIME =',time
-              !
-              ! DO it = 1,N
-              !   WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,             &
-              !                SEM_EDDY(it)%Z_pos
-              ! END DO
-              ! WRITE(100,*)
-              ! CLOSE(100)
-              !
-              ! CALL CPU_TIME(time_end)
+              file_name = '/EDDY_POS.plt'
+              path_name = TRIM(dir_name)//TRIM(file_name)
+
+              OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
+              WRITE(100,*) 'VARIABLES = X,Y,Z'
+              WRITE(100,*) 'ZONE'
+              WRITE(100,*) 'SOLUTIONTIME =',time
+
+              DO it = 1,N
+                WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,          &
+                             SEM_EDDY(it)%Z_pos
+              END DO
+              WRITE(100,*)
+              CLOSE(100)
+
+              CALL CPU_TIME(time_end)
 
               ! WRITE(*,*) '           WRITING PROCESS IS COMPLETED            '
               ! WRITE(*,*) '  Total Writing time : ',time_end - time_sta,' s'
               ! WRITE(*,*) '----------------------------------------------------'
               ! WRITE(*,*) ''
 
-              ! DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
-              ! DEALLOCATE(U_COMB,V_COMB,W_COMB)
+              DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
+              DEALLOCATE(U_COMB,V_COMB,W_COMB,U_pr,rms_pr,U_c)
 
           END SUBROUTINE OUTPUT

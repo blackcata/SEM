@@ -55,7 +55,7 @@
 
           S = ( Y(Ny) - Y(1) + 2*SIGMA ) * ( Z(Nz) - Z(1) + 2*SIGMA )
           V_b = S*2*SIGMA
-          
+
           CALL CPU_TIME(time_end)
           WRITE(*,*) '            READING PROCESS IS COMPLETED            '
           WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'

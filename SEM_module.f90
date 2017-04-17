@@ -72,6 +72,8 @@
           !                   Cholesky Decomposition Function                  !
           !--------------------------------------------------------------------!
           SUBROUTINE CHOL(A,R,N)
+            IMPLICIT NONE
+
             INTEGER,INTENT(IN) :: N
             REAL(KIND=8) :: A(N,N)
             REAL(KIND=8),INTENT(IN) :: R(N,N)
@@ -107,6 +109,8 @@
           !                   Matrix multiplication function                   !
           !--------------------------------------------------------------------!
           SUBROUTINE MAT_MUL(A,B,AB,Ni,Nj,Nk)
+            IMPLICIT NONE
+            
             INTEGER,INTENT(IN) :: Ni,Nj,Nk
             REAL(KIND=8) :: AB(Ni,Nj)
             REAL(KIND=8),INTENT(IN) :: A(Ni,Nk),B(Nk,Nj)

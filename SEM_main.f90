@@ -29,7 +29,7 @@
             CALL SEM_STAT
             CALL CPU_TIME(time_end)
 
-            WRITE(*,"(A,I5,2X,A,F10.6,A)")                                      &
+            WRITE(*,"(A,1X,I5,2X,A,F10.6,A)")                                   &
                        'SEM for',it,'iteration time : ',time_end - time_sta,' s'
             IF( mod(it,OUT_NUM) == 0 ) CALL OUTPUT
           END DO

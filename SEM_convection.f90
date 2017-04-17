@@ -24,7 +24,8 @@
 
             INTEGER :: it,j,k
             REAL(KIND=8) :: time_sta, time_end, Y_start, Y_end, Z_start, Z_end, &
-                            U_conv, V_conv, W_conv, tmp
+                            U_conv, V_conv, W_conv, tmp_z
+            REAL(KIND=8) :: tmp(1:5)
 
             ! WRITE(*,*) '----------------------------------------------------'
             ! WRITE(*,*) '             CONVECTION PROCESS STARTED             '
@@ -49,39 +50,32 @@
 
               IF ( (SEM_EDDY(it)%X_pos-(-SIGMA))*                               &
                    (SEM_EDDY(it)%X_pos-(SIGMA)) > 0 .OR.                        &
-                   (SEM_EDDY(it)%Y_pos - Y_start)*                               &
+                   (SEM_EDDY(it)%Y_pos - Y_start)*                              &
                    (SEM_EDDY(it)%Y_pos - Y_end) > 0 ) THEN
 
                    SEM_EDDY(it)%eddy_len = SIGMA
                    SEM_EDDY(it)%X_pos = - SIGMA
 
                    CALL RANDOM_NUMBER(tmp)
-                   SEM_EDDY(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp
+                   SEM_EDDY(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(1)
+                   SEM_EDDY(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(2)
 
-                   CALL RANDOM_NUMBER(tmp)
-                   SEM_EDDY(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp
-
-                   CALL RANDOM_NUMBER(tmp)
-                   SEM_EDDY(it)%X_int = INTENSITY_det(tmp-0.5)
-
-                   CALL RANDOM_NUMBER(tmp)
-                   SEM_EDDY(it)%Y_int = INTENSITY_det(tmp-0.5)
-
-                   CALL RANDOM_NUMBER(tmp)
-                   SEM_EDDY(it)%Z_int = INTENSITY_det(tmp-0.5)
+                   SEM_EDDY(it)%X_int = INTENSITY_det(tmp(3)-0.5)
+                   SEM_EDDY(it)%Y_int = INTENSITY_det(tmp(4)-0.5)
+                   SEM_EDDY(it)%Z_int = INTENSITY_det(tmp(5)-0.5)
 
               END IF
               !----------------------------------------------------------------!
               !                 Periodic boundary conditions                   !
               !----------------------------------------------------------------!
               IF ( SEM_EDDY(it)%Z_pos < Z_start ) THEN
-                tmp = Z_start - SEM_EDDY(it)%Z_pos
-                SEM_EDDY(it)%Z_pos = Z_end - tmp
+                tmp_z = Z_start - SEM_EDDY(it)%Z_pos
+                SEM_EDDY(it)%Z_pos = Z_end - tmp_z
               END IF
 
               IF ( SEM_EDDY(it)%Z_pos > Z_end ) THEN
-                tmp = SEM_EDDY(it)%Z_pos - Z_end
-                SEM_EDDY(it)%Z_pos = Z_start + tmp
+                tmp_z = SEM_EDDY(it)%Z_pos - Z_end
+                SEM_EDDY(it)%Z_pos = Z_start + tmp_z
               END IF
 
             END DO
