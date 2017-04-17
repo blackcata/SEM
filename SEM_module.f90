@@ -41,7 +41,7 @@
             REAL(KIND=8) :: Z_int     ! Eddy's Z intensity
           END TYPE EDDY_CHAR
 
-          INTEGER :: N, Ny, Nz, Nt
+          INTEGER :: N, Ny, Nz, Nt, OUT_NUM
           REAL(KIND=8) :: dt, SIGMA, V_b, time
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
 

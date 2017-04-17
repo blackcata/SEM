@@ -10,7 +10,7 @@
 
         PROGRAM SEM_main
           USE SEM_module,                                                       &
-            ONLY : Nt, time, dt
+            ONLY : Nt, time, dt, OUT_NUM
 
           IMPLICIT NONE
           INTEGER :: it
@@ -31,7 +31,7 @@
 
             WRITE(*,"(A,I5,2X,A,F10.6,A)")                                      &
                        'SEM for',it,'iteration time : ',time_end - time_sta,' s'
-            CALL OUTPUT
+            IF( mod(it,OUT_NUM) == 0 ) CALL OUTPUT
           END DO
 
         END PROGRAM SEM_main

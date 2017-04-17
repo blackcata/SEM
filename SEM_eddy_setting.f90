@@ -23,9 +23,9 @@
             IMPLICIT NONE
 
             INTEGER :: it
-            REAL(KIND=8) :: Y_start, Y_end, Z_start, Z_end, tmp ,               &
+            REAL(KIND=8) :: Y_start, Y_end, Z_start, Z_end,                     &
                             time_sta, time_end
-            REAL(KIND=8) :: INT_X(1:N), INT_Y(1:N), INT_Z(1:N)
+            REAL(KIND=8) :: INT_X(1:N), INT_Y(1:N), INT_Z(1:N), tmp(1:3)
 
             WRITE(*,*) '----------------------------------------------------'
             WRITE(*,*) '            EDDY SETTING PROCESS STARTED            '
@@ -51,13 +51,9 @@
               SEM_EDDY(it)%eddy_len = SIGMA
 
               CALL RANDOM_NUMBER(tmp)
-              SEM_EDDY(it)%X_pos = -SIGMA + 2*SIGMA*tmp
-
-              CALL RANDOM_NUMBER(tmp)
-              SEM_EDDY(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp
-
-              CALL RANDOM_NUMBER(tmp)
-              SEM_EDDY(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp
+              SEM_EDDY(it)%X_pos = -SIGMA + 2*SIGMA*tmp(1)
+              SEM_EDDY(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(2)
+              SEM_EDDY(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(3)
 
               SEM_EDDY(it)%X_int = INTENSITY_det(INT_X(it)-0.5)
               SEM_EDDY(it)%Y_int = INTENSITY_det(INT_Y(it)-0.5)
