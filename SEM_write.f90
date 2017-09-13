@@ -126,7 +126,8 @@
               ! WRITE(*,*) '----------------------------------------------------'
               ! WRITE(*,*) ''
 
-              DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
-              DEALLOCATE(U_COMB,V_COMB,W_COMB,U_pr,rms_pr,U_c)
-
+              IF ( INT(time/dt) == Nt) THEN
+                DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
+                DEALLOCATE(U_COMB,V_COMB,W_COMB,U_pr,rms_pr,U_c)
+              END IF
           END SUBROUTINE OUTPUT
