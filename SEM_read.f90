@@ -15,7 +15,7 @@
             ONLY : N, Ny, Nz, SIGMA, V_b, file_name, dir_name, path_name
 
           USE SEM_module,                                                     &
-            ONLY : Y, Z, U, V, W, RS
+            ONLY : Y, Z, U, V, W, T, RS, THS
 
           IMPLICIT NONE
 
@@ -28,7 +28,7 @@
           CALL CPU_TIME(time_sta)
 
           dir_name = 'DATA'
-          file_name = 'SLICE.plt'
+          file_name = 'Slice_temp.plt'
           path_name = TRIM(dir_name)//'/'//TRIM(file_name)
 
           OPEN(100,FILE=path_name,FORM='FORMATTED',STATUS='OLD')
@@ -38,12 +38,13 @@
           !--------------------------------------------------------------------!
           !                  Main loop of reading SLICE datas                  !
           !--------------------------------------------------------------------!
-          DO k = 1,Nz
-            DO j = 1,Ny
+          DO j = 1,Ny
+            DO k = 1,Nz
 
-                READ(100,*) tmp_z, tmp_y, U(j,k), V(j,k), W(j,k),               &
+                READ(100,*) tmp_z, tmp_y, U(j,k), V(j,k), W(j,k), T(j,k),       &
                             RS(1,j,k), RS(2,j,k), RS(3,j,k), RS(4,j,k),         &
-                            RS(5,j,k), RS(6,j,k)
+                            RS(5,j,k), RS(6,j,k),                               &
+                            THS(1,j,k), THS(2,j,k), THS(3,j,k), THS(4,j,k)
 
                 IF (k==1) Y(j)      = tmp_y
                 IF (j==1) Z(k)      = tmp_z

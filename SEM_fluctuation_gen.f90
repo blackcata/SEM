@@ -14,7 +14,7 @@
               ONLY : N, Ny, Nz, SIGMA, V_b
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U_INLET, V_INLET, W_INLET, SEM_EDDY
+              ONLY : Y, Z, U_INLET, V_INLET, W_INLET, T_INLET, SEM_EDDY
 
             IMPLICIT NONE
             INTRINSIC :: sqrt, abs
@@ -54,6 +54,10 @@
                     W_INLET(j,k) = W_INLET(j,k) +                               &
                                   sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
                                   SEM_EDDY(it)%Z_int*f
+
+                    T_INLET(j,k) = T_INLET(j,k) +                               &
+                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
+                                  SEM_EDDY(it)%Z_int*f
                   END IF
                 END DO
 
@@ -64,6 +68,7 @@
             U_INLET(1:Ny,1:Nz) = U_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
             V_INLET(1:Ny,1:Nz) = V_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
             W_INLET(1:Ny,1:Nz) = W_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+            T_INLET(1:Ny,1:Nz) = T_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
 
             CALL CPU_TIME(time_end)
             ! WRITE(*,*) '         FLUCTUATION PROCESS IS COMPLETED           '

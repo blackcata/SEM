@@ -4,7 +4,7 @@
 !                                                                              !
 !   PURPOSE : Module for SEM inflow generator                                  !
 !                                                                              !
-!                                                             2016.03.02 K.Noh !
+!                                                             2017.03.02 K.Noh !
 !                                                                              !
 !   VARIABLES : dt    : Time step                                              !
 !               N     : The number of eddies                                   !
@@ -14,15 +14,16 @@
 !                                                                              !
 !               Y,Z      : Y,Z coordinates                                     !
 !               U,V,W    : Mean velocity arrays                                !
+!               T        : Mean temperature arrays                             !
 !               RS       : Reynolds stress                                     !
 !               SEM_EDDY : Each eddies properties including positions,         !
 !                          intensities, length scales.                         !
-!               U,V,W_INLET : Stochastic components of inflow surface          !
-!               U,V,W_COMB  : Reconstructed velocity compoents of inflow       !
+!               U,V,W,T_INLET : Stochastic components of inflow surface        !
+!               U,V,W,T_COMB  : Reconstructed compoents of inflow              !
 !                                                                              !
 !               U_c    : Local convection velocities                           !
-!               U_pr   : Mean velocities profiles (U,V,W)                      !
-!               rms_pr : Reynolds stress profiles (uu,vv,ww,uv)                !
+!               U_pr   : Mean profiles (U,V,W,T)                               !
+!               rms_pr : Reynolds stress profiles (uu,vv,ww,tt,uv,ut,vt,wt)    !
 !                                                                              !
 !------------------------------------------------------------------------------!
 
@@ -39,6 +40,7 @@
             REAL(KIND=8) :: X_int     ! Eddy's X intensity
             REAL(KIND=8) :: Y_int     ! Eddy's Y intensity
             REAL(KIND=8) :: Z_int     ! Eddy's Z intensity
+            REAL(KIND=8) :: T_int     ! Eddy's Z intensity
           END TYPE EDDY_CHAR
 
           INTEGER :: N, Ny, Nz, Nt, OUT_NUM
@@ -46,11 +48,12 @@
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
 
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
-          REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W,                     &
+          REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W,T,                   &
                                                      U_INLET,V_INLET,W_INLET,   &
                                                      U_COMB,V_COMB,W_COMB,      &
+                                                     T_INLET, T_COMB,           &
                                                      U_pr, rms_pr, U_c
-          REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS
+          REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS, THS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE  :: SEM_EDDY
 
         CONTAINS
@@ -110,7 +113,7 @@
           !--------------------------------------------------------------------!
           SUBROUTINE MAT_MUL(A,B,AB,Ni,Nj,Nk)
             IMPLICIT NONE
-            
+
             INTEGER,INTENT(IN) :: Ni,Nj,Nk
             REAL(KIND=8) :: AB(Ni,Nj)
             REAL(KIND=8),INTENT(IN) :: A(Ni,Nk),B(Nk,Nj)

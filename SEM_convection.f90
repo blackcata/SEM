@@ -14,7 +14,7 @@
               ONLY : N, Ny, Nz, SIGMA, dt
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, SEM_EDDY, U_COMB, V_COMB, W_COMB
+              ONLY : Y, Z, SEM_EDDY, U_COMB, V_COMB, W_COMB, T_COMB
 
             USE SEM_module,                                                     &
               ONLY : INTENSITY_det
@@ -25,7 +25,7 @@
             INTEGER :: it,j,k
             REAL(KIND=8) :: time_sta, time_end, Y_start, Y_end, Z_start, Z_end, &
                             U_conv, V_conv, W_conv, tmp_z
-            REAL(KIND=8) :: tmp(1:5)
+            REAL(KIND=8) :: tmp(1:6)
 
             ! WRITE(*,*) '----------------------------------------------------'
             ! WRITE(*,*) '             CONVECTION PROCESS STARTED             '
@@ -63,6 +63,7 @@
                    SEM_EDDY(it)%X_int = INTENSITY_det(tmp(3)-0.5)
                    SEM_EDDY(it)%Y_int = INTENSITY_det(tmp(4)-0.5)
                    SEM_EDDY(it)%Z_int = INTENSITY_det(tmp(5)-0.5)
+                   SEM_EDDY(it)%T_int = INTENSITY_det(tmp(6)-0.5)
 
               END IF
               !----------------------------------------------------------------!
