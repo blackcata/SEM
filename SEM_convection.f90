@@ -57,6 +57,7 @@
                    SEM_EDDY(it)%X_pos = - SIGMA
 
                    CALL RANDOM_NUMBER(tmp)
+                   SEM_EDDY(it)%X_pos = 0 - SIGMA
                    SEM_EDDY(it)%Y_pos = Y_start + (Y_end-Y_start)*tmp(1)
                    SEM_EDDY(it)%Z_pos = Z_start + (Z_end-Z_start)*tmp(2)
 

@@ -64,7 +64,7 @@
             T(1:Ny,1:Nz) = 0.0
 
             RS(1:6,1:Ny,1:Nz) = 0.0
-            RS(1:4,1:Ny,1:Nz) = 0.0
+            THS(1:4,1:Ny,1:Nz) = 0.0
 
             U_INLET(1:Ny,1:Nz) = 0.0
             V_INLET(1:Ny,1:Nz) = 0.0
