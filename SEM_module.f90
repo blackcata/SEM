@@ -44,7 +44,7 @@
           END TYPE EDDY_CHAR
 
           INTEGER :: N, Ny, Nz, Nt, OUT_NUM
-          REAL(KIND=8) :: dt, SIGMA, V_b, time
+          REAL(KIND=8) :: dt, SIGMA, V_b, time, eps
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
 
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
@@ -86,23 +86,22 @@
 
             DO i = 1,N
               DO j = 1,i
-                IF (i==j) THEN
+                A(i,j) = R(i,j)
 
-                  A(i,j) = R(i,j)
+                IF (i==j) THEN
                   DO k = 1,j-1
                     A(i,j) = A(i,j) - A(j,k)**2
                   END DO
-                  A(i,j) = sqrt(A(i,j))
+                  A(i,j) = sqrt(abs(A(i,j)))
 
                 ELSE
-
-                  A(i,j) = R(i,j)
                   DO k = 1,j-1
                     A(i,j) = A(i,j) - A(i,k)*A(j,k)
                   END DO
-                  A(i,j) = A(i,j)/A(j,j)
+                  A(i,j) = A(i,j)/(A(j,j) + eps)
 
                 END IF
+
               END DO
             END DO
 

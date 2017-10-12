@@ -11,7 +11,8 @@
         SUBROUTINE SETUP
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, Nt, dt, SIGMA, V_b, file_name, dir_name, OUT_NUM
+              ONLY : N, Ny, Nz, Nt, dt, SIGMA, V_b, file_name, dir_name, OUT_NUM&
+                     ,eps
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, T, RS, THS, U_INLET, V_INLET, W_INLET,      &
@@ -40,6 +41,8 @@
             SIGMA = 0.20
 
             OUT_NUM = 100
+
+            eps = 1e-8
 
             !------------------------------------------------------------------!
             !                         Allocate variables                       !
