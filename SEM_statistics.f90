@@ -14,7 +14,7 @@
               ONLY : N, Ny, Nz, Nt, dt, time
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U, V, W, T, RS, THS,                                 &
+              ONLY : Y, Z, U_READ, V_READ, W_READ, T_READ, RS, THS,             &
                      SEM_EDDY, U_INLET, V_INLET, W_INLET,                       &
                      U_COMB, V_COMB, W_COMB, T_COMB, T_INLET, U_c, U_pr, rms_pr
 
@@ -34,18 +34,22 @@
                   U_tmp(3,j) = U_tmp(3,j) + W_COMB(j,k)
                   U_tmp(4,j) = U_tmp(4,j) + T_COMB(j,k)
 
-                  rms_tmp(1,j) = rms_tmp(1,j) + (U_COMB(j,k) - U(j,k))**2
-                  rms_tmp(2,j) = rms_tmp(2,j) + (V_COMB(j,k) - V(j,k))**2
-                  rms_tmp(3,j) = rms_tmp(3,j) + (W_COMB(j,k) - W(j,k))**2
-                  rms_tmp(4,j) = rms_tmp(4,j) + (T_COMB(j,k) - T(j,k))**2
+                  rms_tmp(1,j) = rms_tmp(1,j) + (U_COMB(j,k) - U_READ(j,k))**2
+                  rms_tmp(2,j) = rms_tmp(2,j) + (V_COMB(j,k) - V_READ(j,k))**2
+                  rms_tmp(3,j) = rms_tmp(3,j) + (W_COMB(j,k) - W_READ(j,k))**2
+                  rms_tmp(4,j) = rms_tmp(4,j) + (T_COMB(j,k) - T_READ(j,k))**2
                   rms_tmp(5,j) = rms_tmp(5,j) +                                 &
-                                 (U_COMB(j,k) - U(j,k))*(V_COMB(j,k) - V(j,k))
+                                 (U_COMB(j,k) - U_READ(j,k))                    &
+                                *(V_COMB(j,k) - V_READ(j,k))
                   rms_tmp(6,j) = rms_tmp(6,j) +                                 &
-                                 (U_COMB(j,k) - U(j,k))*(T_COMB(j,k) - T(j,k))
+                                 (U_COMB(j,k) - U_READ(j,k))                    &
+                                *(T_COMB(j,k) - T_READ(j,k))
                   rms_tmp(7,j) = rms_tmp(7,j) +                                 &
-                                 (V_COMB(j,k) - V(j,k))*(T_COMB(j,k) - T(j,k))
+                                 (V_COMB(j,k) - V_READ(j,k))                    &
+                                *(T_COMB(j,k) - T_READ(j,k))
                   rms_tmp(8,j) = rms_tmp(8,j) +                                 &
-                                 (W_COMB(j,k) - W(j,k))*(T_COMB(j,k) - T(j,k))
+                                 (W_COMB(j,k) - W_READ(j,k))                    &
+                                *(T_COMB(j,k) - T_READ(j,k))
 
 
               END DO

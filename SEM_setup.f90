@@ -15,9 +15,9 @@
                      ,eps
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U, V, W, T, RS, THS, U_INLET, V_INLET, W_INLET,      &
-                      SEM_EDDY, U_COMB, V_COMB, W_COMB, U_pr, rms_pr, U_c,      &
-                      T_INLET, T_COMB
+              ONLY : Y, Z, U_READ, V_READ, W_READ, T_READ, RS, THS,             &
+                     U_INLET, V_INLET, W_INLET, SEM_EDDY,                       &
+                     U_COMB, V_COMB, W_COMB, U_pr, rms_pr, U_c, T_INLET, T_COMB
 
             IMPLICIT NONE
             INTEGER :: i,j,k
@@ -36,7 +36,7 @@
             Ny = 96
             Nz = 256
 
-            Nt    = 40000
+            Nt    = 5000
             dt    = 5e-3
             SIGMA = 0.20
 
@@ -48,7 +48,8 @@
             !                         Allocate variables                       !
             !------------------------------------------------------------------!
             ALLOCATE( Y(1:Ny),Z(1:Nz) )
-            ALLOCATE( U(1:Ny,1:Nz), V(1:Ny,1:Nz), W(1:Ny,1:Nz), T(1:Ny,1:Nz) )
+            ALLOCATE( U_READ(1:Ny,1:Nz), V_READ(1:Ny,1:Nz),                     &
+                      W_READ(1:Ny,1:Nz), T_READ(1:Ny,1:Nz) )
             ALLOCATE( U_INLET(1:Ny,1:Nz),V_INLET(1:Ny,1:Nz),W_INLET(1:Ny,1:Nz) )
             ALLOCATE( U_COMB(1:Ny,1:Nz),V_COMB(1:Ny,1:Nz),W_COMB(1:Ny,1:Nz) )
             ALLOCATE( T_INLET(1:Ny,1:Nz), T_COMB(1:Ny,1:Nz)  )
@@ -61,10 +62,10 @@
             Y(1:Ny) = 0.0
             Z(1:Nz) = 0.0
 
-            U(1:Ny,1:Nz) = 0.0
-            V(1:Ny,1:Nz) = 0.0
-            W(1:Ny,1:Nz) = 0.0
-            T(1:Ny,1:Nz) = 0.0
+            U_READ(1:Ny,1:Nz) = 0.0
+            V_READ(1:Ny,1:Nz) = 0.0
+            W_READ(1:Ny,1:Nz) = 0.0
+            T_READ(1:Ny,1:Nz) = 0.0
 
             RS(1:6,1:Ny,1:Nz) = 0.0
             THS(1:4,1:Ny,1:Nz) = 0.0

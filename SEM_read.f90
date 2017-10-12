@@ -15,7 +15,7 @@
             ONLY : N, Ny, Nz, SIGMA, V_b, file_name, dir_name, path_name
 
           USE SEM_module,                                                     &
-            ONLY : Y, Z, U, V, W, T, RS, THS
+            ONLY : Y, Z, U_READ, V_READ, W_READ, T_READ, RS, THS
 
           IMPLICIT NONE
 
@@ -41,9 +41,9 @@
           DO j = 1,Ny
             DO k = 1,Nz
 
-                READ(100,*) tmp_z, tmp_y, U(j,k), V(j,k), W(j,k), T(j,k),       &
-                            RS(1,j,k), RS(2,j,k), RS(3,j,k), RS(4,j,k),         &
-                            RS(5,j,k), RS(6,j,k),                               &
+                READ(100,*) tmp_z, tmp_y, U_READ(j,k), V_READ(j,k),             &
+                            W_READ(j,k), T_READ(j,k), RS(1,j,k), RS(2,j,k),     &
+                            RS(3,j,k), RS(4,j,k), RS(5,j,k), RS(6,j,k),         &
                             THS(1,j,k), THS(2,j,k), THS(3,j,k), THS(4,j,k)
 
                 IF (k==1) Y(j)      = tmp_y

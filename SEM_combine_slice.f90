@@ -14,7 +14,8 @@
               ONLY : Ny, Nz
 
             USE SEM_module,                                                     &
-              ONLY : U_INLET, V_INLET, W_INLET, SEM_EDDY, U, V, W, T, RS, THS,  &
+              ONLY : U_INLET, V_INLET, W_INLET, SEM_EDDY,                       &
+                     U_READ, V_READ, W_READ, T_READ, RS, THS,                   &
                      U_COMB, V_COMB, W_COMB, T_INLET, T_COMB
 
             USE SEM_module,                                                     &
@@ -37,7 +38,7 @@
                 u_ins(1:4,1)   = 0.0
                 u_fluc(1:4,1)  = 0.0
 
-                U_mean(1:4,1) = (/U(j,k),V(j,k),W(j,k),T(j,k)/)
+                U_mean(1:4,1) = (/U_READ(j,k),V_READ(j,k),W_READ(j,k),T_READ(j,k)/)
                 u_tmp(1:4,1)  = (/U_INLET(j,k),V_INLET(j,k),                    &
                                   W_INLET(j,k),T_INLET(j,k)/)
                 R_loc(1,1:4)  = (/RS(1,j,k),RS(4,j,k),RS(5,j,k),THS(2,j,k)/)

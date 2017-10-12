@@ -12,7 +12,7 @@
               ONLY : N, Ny, Nz, Nt, dt, time, file_name, dir_name, path_name
 
             USE SEM_module,                                                     &
-              ONLY : Y, Z, U, V, W, T, RS, THS,                                 &
+              ONLY : Y, Z, U_READ, V_READ, W_READ, T_READ, RS, THS,             &
                      U_INLET, V_INLET, W_INLET, T_INLET, SEM_EDDY,    &
                      U_COMB, V_COMB, W_COMB, T_COMB, U_c, U_pr, rms_pr
 
@@ -62,10 +62,10 @@
 
                 DO j = 1,Ny
                   DO k = 1,Nz
-                    U_mean(1,j) = U_mean(1,j) + U(j,k)
-                    U_mean(2,j) = U_mean(2,j) + V(j,k)
-                    U_mean(3,j) = U_mean(3,j) + W(j,k)
-                    U_mean(4,j) = U_mean(4,j) + T(j,k)
+                    U_mean(1,j) = U_mean(1,j) + U_READ(j,k)
+                    U_mean(2,j) = U_mean(2,j) + V_READ(j,k)
+                    U_mean(3,j) = U_mean(3,j) + W_READ(j,k)
+                    U_mean(4,j) = U_mean(4,j) + T_READ(j,k)
                   END DO
                     U_mean(1:4,j) = U_mean(1:4,j)/Nz
                     WRITE(100,"(9F15.9)") Y(j), U_pr(1,j), U_mean(1,j),         &
@@ -139,7 +139,8 @@
               ! WRITE(*,*) ''
 
               IF ( INT(time/dt) == Nt) THEN
-                DEALLOCATE(Y,Z,U,V,W,RS,U_INLET,V_INLET,W_INLET,SEM_EDDY)
+                DEALLOCATE(Y,Z,U_READ,V_READ,W_READ,RS,THS)
+                DEALLOCATE(U_INLET,V_INLET,W_INLET,SEM_EDDY)
                 DEALLOCATE(U_COMB,V_COMB,W_COMB,U_pr,rms_pr,U_c)
               END IF
           END SUBROUTINE OUTPUT
