@@ -12,10 +12,12 @@
 !               V_b   : Volume of box including eddies                         !
 !               Nt    : The number of iterations                               !
 !                                                                              !
-!               Y,Z      : Y,Z coordinates                                     !
-!               U,V,W    : Mean velocity arrays                                !
-!               T        : Mean temperature arrays                             !
-!               RS       : Reynolds stress                                     !
+!               Y,Z                     : Y,Z coordinates                      !
+!               U_READ,V_READ,W_READ    : Mean velocity arrays                 !
+!               T_READ                  : Mean temperature arrays              !
+!               RS                      : Reynolds stress                      !
+!               THS                     : Covarainces velocity & temperature   !
+!                                                                              !
 !               SEM_EDDY : Each eddies properties including positions,         !
 !                          intensities, length scales.                         !
 !               U,V,W,T_INLET : Stochastic components of inflow surface        !
@@ -55,6 +57,22 @@
                                                      U_pr, rms_pr, U_c
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS, THS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE  :: SEM_EDDY
+
+        !--------------------------------------------------------------------!
+        !                  Interfaces of SEM Subroutines                     !
+        !--------------------------------------------------------------------!
+
+          !--------Intensity Determination function
+          INTERFACE INTENSITY_det
+            MODULE PROCEDURE INTENSITY_det
+          END INTERFACE INTENSITY_det
+
+          !--------Cholesky Decomposition Function
+          INTERFACE CHOL
+            MODULE PROCEDURE CHOL
+          END INTERFACE CHOL
+
+          SAVE
 
         CONTAINS
           !--------------------------------------------------------------------!
