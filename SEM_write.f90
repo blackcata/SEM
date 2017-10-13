@@ -8,24 +8,26 @@
 !                                                                              !
 !------------------------------------------------------------------------------!
           SUBROUTINE OUTPUT
+            USE flow_module,                                                    &
+              ONLY :  Nt, dt
+
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, Nt, dt, time, file_name, dir_name, path_name
+              ONLY : N, Ny, Nz, time
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U_READ, V_READ, W_READ, T_READ, RS, THS,             &
                      U_INLET, V_INLET, W_INLET, T_INLET, SEM_EDDY,    &
                      U_COMB, V_COMB, W_COMB, T_COMB, U_c, U_pr, rms_pr
 
+            USE IO_module
+
               IMPLICIT NONE
               INTEGER :: it,j,k
-              REAL(KIND=8) :: time_sta, time_end, U_mean(4,1:Ny), rms_mean(8,1:Ny)
+              REAL(KIND=8) :: U_mean(4,1:Ny), rms_mean(8,1:Ny)
 
               U_mean(1:4,1:Ny)   = 0.0
               rms_mean(1:8,1:Ny) = 0.0
 
-              ! WRITE(*,*) '----------------------------------------------------'
-              ! WRITE(*,*) '              WRITING PROCESS STARTED               '
-              CALL CPU_TIME(time_sta)
               dir_name = 'RESULT'
 
               !----------------------------------------------------------------!
@@ -130,13 +132,6 @@
               END DO
               WRITE(100,*)
               CLOSE(100)
-
-              CALL CPU_TIME(time_end)
-
-              ! WRITE(*,*) '           WRITING PROCESS IS COMPLETED            '
-              ! WRITE(*,*) '  Total Writing time : ',time_end - time_sta,' s'
-              ! WRITE(*,*) '----------------------------------------------------'
-              ! WRITE(*,*) ''
 
               IF ( INT(time/dt) == Nt) THEN
                 DEALLOCATE(Y,Z,U_READ,V_READ,W_READ,RS,THS)

@@ -50,7 +50,7 @@
                 CALL MAT_MUL(A,u_tmp,u_fluc,4,1,4)
 
                 u_ins(1:4,1) = U_mean(1:4,1) + u_fluc(1:4,1)
-
+WRITE(*,"(2I,3F15.10)"),k,j,u_ins(1,1),u_mean(1,1),u_fluc(1,1)
                 U_COMB(j,k) = u_ins(1,1)
                 V_COMB(j,k) = u_ins(2,1)
                 W_COMB(j,k) = u_ins(3,1)

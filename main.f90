@@ -8,30 +8,30 @@
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-        PROGRAM SEM_main
-          USE SEM_module,                                                       &
-            ONLY : Nt, time, dt, OUT_NUM
+        PROGRAM main
+          USE flow_module
+          USE SEM_module
+          USE IO_module
 
           IMPLICIT NONE
           INTEGER :: it
           REAL(KIND=8) :: time_sta, time_end
 
-          CALL SETUP
-          CALL READ_DATA
-          CALL EDDY_SETTING
+          CALL FOLDER_SETUP
+          CALL FLOW_SETUP
 
           DO it = 1,Nt
-            time = it * dt
-            CALL CPU_TIME(time_sta)
-            CALL FLUCT_GEN
-            CALL COMB_SLICE
-            CALL CONVECT_EDDY
-            CALL SEM_STAT
-            CALL CPU_TIME(time_end)
+              time = it * dt
+              CALL CPU_TIME(time_sta)
 
-            WRITE(*,"(A,1X,I5,2X,A,F10.6,A)")                                   &
-                       'SEM for',it,'iteration time : ',time_end - time_sta,' s'
-            IF( mod(it,OUT_NUM) == 0 ) CALL OUTPUT
+              CALL SEM_main(it)
+
+              CALL CPU_TIME(time_end)
+
+              WRITE(*,"(A,1X,I5,2X,A,F10.6,A)")                                 &
+                         'SEM for',it,'iteration time : ',time_end - time_sta,' s'
+
+              IF( mod(it,OUT_NUM) == 0 ) CALL OUTPUT
           END DO
 
-        END PROGRAM SEM_main
+        END PROGRAM main
