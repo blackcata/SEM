@@ -257,7 +257,7 @@
             ALLOCATE( U_COMB(1:Ny,1:Nz),V_COMB(1:Ny,1:Nz),W_COMB(1:Ny,1:Nz) )
             ALLOCATE( T_INLET(1:Ny,1:Nz), T_COMB(1:Ny,1:Nz)  )
             ALLOCATE( RS(6,1:Ny,1:Nz), THS(4,1:Ny,1:Nz), U_c(1:Ny,1:Nz) )
-            ALLOCATE( SEM_EDDY(1:N), U_pr(4,1:Ny), rms_pr(8,1:Ny) )
+            ALLOCATE( SEM_EDDY(1:N), U_pr(4,1:Ny), rms_pr(10,1:Ny) )
 
             !------------------------------------------------------------------!
             !                         Initial Conditions                       !
@@ -285,7 +285,7 @@
 
             U_c(1:Ny,1:Nz)   = 0.0
             U_pr(1:4,1:Ny)   = 0.0
-            rms_pr(1:8,1:Ny) = 0.0
+            rms_pr(1:10,1:Ny) = 0.0
 
             SEM_EDDY(1:N)%eddy_num = 0
             SEM_EDDY(1:N)%eddy_len = 0.0
@@ -631,11 +631,11 @@
 
             IMPLICIT NONE
             INTEGER :: j,k,tt
-            REAL(KIND=8) :: U_tmp(4,1:Ny), rms_tmp(8,1:Ny)
+            REAL(KIND=8) :: U_tmp(4,1:Ny), rms_tmp(10,1:Ny)
             tt = INT(time / dt)
 
             U_tmp(1:4,1:Ny)   = 0.0
-            rms_tmp(1:8,1:Ny) = 0.0
+            rms_tmp(1:10,1:Ny) = 0.0
 
             !$OMP PARALLEL DO private(k,j)
             DO j = 1,Ny
@@ -649,27 +649,34 @@
                   rms_tmp(2,j) = rms_tmp(2,j) + (V_COMB(j,k) - V_READ(j,k))**2
                   rms_tmp(3,j) = rms_tmp(3,j) + (W_COMB(j,k) - W_READ(j,k))**2
                   rms_tmp(4,j) = rms_tmp(4,j) + (T_COMB(j,k) - T_READ(j,k))**2
+
                   rms_tmp(5,j) = rms_tmp(5,j) +                                 &
                                  (U_COMB(j,k) - U_READ(j,k))                    &
                                 *(V_COMB(j,k) - V_READ(j,k))
                   rms_tmp(6,j) = rms_tmp(6,j) +                                 &
                                  (U_COMB(j,k) - U_READ(j,k))                    &
-                                *(T_COMB(j,k) - T_READ(j,k))
+                                *(W_COMB(j,k) - W_READ(j,k))
                   rms_tmp(7,j) = rms_tmp(7,j) +                                 &
                                  (V_COMB(j,k) - V_READ(j,k))                    &
-                                *(T_COMB(j,k) - T_READ(j,k))
+                                *(W_COMB(j,k) - W_READ(j,k))
+
                   rms_tmp(8,j) = rms_tmp(8,j) +                                 &
+                                 (U_COMB(j,k) - U_READ(j,k))                    &
+                                *(T_COMB(j,k) - T_READ(j,k))
+                  rms_tmp(9,j) = rms_tmp(9,j) +                                 &
+                                 (V_COMB(j,k) - V_READ(j,k))                    &
+                                *(T_COMB(j,k) - T_READ(j,k))
+                  rms_tmp(10,j) = rms_tmp(10,j) +                                 &
                                  (W_COMB(j,k) - W_READ(j,k))                    &
                                 *(T_COMB(j,k) - T_READ(j,k))
-
 
               END DO
 
               U_tmp(1:4,j) = U_tmp(1:4,j)/Nz
               U_pr(1:4,j)  = ( U_pr(1:4,j) * (tt - 1) + U_tmp(1:4,j) )/tt
 
-              rms_tmp(1:8,j) = rms_tmp(1:8,j)/Nz
-              rms_pr(1:8,j) = ( rms_pr(1:8,j) * (tt - 1) + rms_tmp(1:8,j) )/tt
+              rms_tmp(1:10,j) = rms_tmp(1:10,j)/Nz
+              rms_pr(1:10,j) = ( rms_pr(1:10,j) * (tt - 1) + rms_tmp(1:10,j) )/tt
 
             END DO
             !OMP END PARALLEL

@@ -23,10 +23,10 @@
 
               IMPLICIT NONE
               INTEGER :: it,j,k
-              REAL(KIND=8) :: U_mean(4,1:Ny), rms_mean(8,1:Ny)
+              REAL(KIND=8) :: U_mean(4,1:Ny), rms_mean(10,1:Ny)
 
               U_mean(1:4,1:Ny)   = 0.0
-              rms_mean(1:8,1:Ny) = 0.0
+              rms_mean(1:10,1:Ny) = 0.0
 
               dir_name = 'RESULT'
 
@@ -87,7 +87,7 @@
 
               IF ( INT(time/dt) == Nt) THEN
                 OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-                WRITE(100,*)'VARIABLES = Y,uu,uu_exac,vv,vv_exac,ww,ww_exac,tt,tt_exac,uv,uv_exac,ut,ut_exac,vt,vt_exac,wt,wt_exac'
+                WRITE(100,*)'VARIABLES = Y,uu,uu_exac,vv,vv_exac,ww,ww_exac,tt,tt_exac,uv,uv_exac,uw,uw_exac,vw,vw_exac,ut,ut_exac,vt,vt_exac,wt,wt_exac'
 
                 DO j = 1,Ny
                   DO k = 1,Nz
@@ -97,41 +97,46 @@
                     rms_mean(4,j) = rms_mean(4,j) + THS(1,j,k)
 
                     rms_mean(5,j) = rms_mean(5,j) + RS(4,j,k)
-                    rms_mean(6,j) = rms_mean(6,j) + THS(2,j,k)
-                    rms_mean(7,j) = rms_mean(7,j) + THS(3,j,k)
-                    rms_mean(8,j) = rms_mean(8,j) + THS(4,j,k)
+                    rms_mean(6,j) = rms_mean(6,j) + RS(5,j,k)
+                    rms_mean(7,j) = rms_mean(7,j) + RS(6,j,k)
+
+                    rms_mean(8,j) = rms_mean(8,j) + THS(2,j,k)
+                    rms_mean(9,j) = rms_mean(9,j) + THS(3,j,k)
+                    rms_mean(10,j) = rms_mean(10,j) + THS(4,j,k)
                   END DO
-                    rms_mean(1:8,j) = rms_mean(1:8,j)/Nz
-                    WRITE(100,"(17F15.9)") Y(j), rms_pr(1,j), rms_mean(1,j),     &
-                                                 rms_pr(2,j), rms_mean(2,j),     &
-                                                 rms_pr(3,j), rms_mean(3,j),     &
-                                                 rms_pr(4,j), rms_mean(4,j),     &
-                                                 rms_pr(5,j), rms_mean(5,j),     &
-                                                 rms_pr(6,j), rms_mean(6,j),     &
-                                                 rms_pr(7,j), rms_mean(7,j),     &
-                                                 rms_pr(8,j), rms_mean(8,j)
+                    rms_mean(1:10,j) = rms_mean(1:10,j)/Nz
+                    WRITE(100,"(21F15.9)") Y(j), rms_pr(1,j), rms_mean(1,j),    &
+                                                 rms_pr(2,j), rms_mean(2,j),    &
+                                                 rms_pr(3,j), rms_mean(3,j),    &
+                                                 rms_pr(4,j), rms_mean(4,j),    &
+                                                 rms_pr(5,j), rms_mean(5,j),    &
+                                                 rms_pr(6,j), rms_mean(6,j),    &
+                                                 rms_pr(7,j), rms_mean(7,j),    &
+                                                 rms_pr(8,j), rms_mean(8,j),    &
+                                                 rms_pr(9,j), rms_mean(9,j),    &
+                                                 rms_pr(10,j), rms_mean(10,j)
                 END DO
                 WRITE(100,*)
                 CLOSE(100)
               END IF
 
-              !----------------------------------------------------------------!
-              !                   Outputs for Eddy posoitions                  !
-              !----------------------------------------------------------------!
-              file_name = '/EDDY_POS.plt'
-              path_name = TRIM(dir_name)//TRIM(file_name)
-
-              OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-              WRITE(100,*) 'VARIABLES = X,Y,Z'
-              WRITE(100,*) 'ZONE'
-              WRITE(100,*) 'SOLUTIONTIME =',time
-
-              DO it = 1,N
-                WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,          &
-                             SEM_EDDY(it)%Z_pos
-              END DO
-              WRITE(100,*)
-              CLOSE(100)
+              ! !----------------------------------------------------------------!
+              ! !                   Outputs for Eddy posoitions                  !
+              ! !----------------------------------------------------------------!
+              ! file_name = '/EDDY_POS.plt'
+              ! path_name = TRIM(dir_name)//TRIM(file_name)
+              !
+              ! OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
+              ! WRITE(100,*) 'VARIABLES = X,Y,Z'
+              ! WRITE(100,*) 'ZONE'
+              ! WRITE(100,*) 'SOLUTIONTIME =',time
+              !
+              ! DO it = 1,N
+              !   WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,          &
+              !                SEM_EDDY(it)%Z_pos
+              ! END DO
+              ! WRITE(100,*)
+              ! CLOSE(100)
 
               IF ( INT(time/dt) == Nt) THEN
                 DEALLOCATE(Y,Z,U_READ,V_READ,W_READ,RS,THS)
