@@ -27,8 +27,8 @@
           SUBROUTINE FLOW_SETUP
             IMPLICIT NONE
 
-            Nt    = 1
-            dt    = 5e-3
+            Nt    = 30000
+            dt    = 3e-1
 
           END SUBROUTINE FLOW_SETUP
         END MODULE flow_module

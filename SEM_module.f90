@@ -238,10 +238,10 @@
             !                         Constants for SEM                        !
             !------------------------------------------------------------------!
             N  = 1000
-            Ny = 96
-            Nz = 256
+            Ny = 64
+            Nz = 64
 
-            SIGMA = 0.20
+            SIGMA = 2.00
 
             OUT_NUM = 1
 
@@ -324,7 +324,7 @@
           CALL CPU_TIME(time_sta)
 
           dir_name = 'DATA'
-          file_name = 'Slice_temp.plt'
+          file_name = 'Slice_TBL.plt'
           path_name = TRIM(dir_name)//'/'//TRIM(file_name)
 
           OPEN(100,FILE=path_name,FORM='FORMATTED',STATUS='OLD')
