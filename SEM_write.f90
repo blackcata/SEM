@@ -37,7 +37,7 @@
               ! path_name = TRIM(dir_name)//TRIM(file_name)
               !
               ! OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-              ! WRITE(100,*) 'VARIABLES = Z,Y,U_ins,V_ins,W_ins'
+              ! WRITE(100,*) 'VARIABLES = Z,Y,U_ins,V_ins,W_ins,T_ins'
               ! WRITE(100,"(2(A,I3,2X))")' ZONE  I = ',Nz,' J = ',Ny
               ! WRITE(100,*) 'SOLUTIONTIME =',time
               !
@@ -45,7 +45,8 @@
               !   DO k = 1,Nz
               !
               !       WRITE(100,"(5F15.9)") Z(k),Y(j),                            &
-              !                             U_COMB(j,k),V_COMB(j,k),W_COMB(j,k)
+              !                             U_COMB(j,k),V_COMB(j,k),W_COMB(j,k),  &
+              !                             T_COMB(j,k)
               !
               !   END DO
               ! END DO
