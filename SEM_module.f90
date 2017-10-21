@@ -21,7 +21,7 @@
 !               SEM_EDDY : Each eddies properties including positions,         !
 !                          intensities, length scales.                         !
 !               U,V,W,T_INLET : Stochastic components of inflow surface        !
-!               U,V,W,T_COMB  : Reconstructed components of inflow              !
+!               U,V,W,T_COMB  : Reconstructed compoents of inflow              !
 !                                                                              !
 !               U_c    : Local convection velocities                           !
 !               U_pr   : Mean profiles (U,V,W,T)                               !
@@ -42,7 +42,7 @@
             REAL(KIND=8) :: X_int     ! Eddy's X intensity
             REAL(KIND=8) :: Y_int     ! Eddy's Y intensity
             REAL(KIND=8) :: Z_int     ! Eddy's Z intensity
-            REAL(KIND=8) :: T_int     ! Eddy's T intensity
+            REAL(KIND=8) :: T_int     ! Eddy's Z intensity
           END TYPE EDDY_CHAR
 
           INTEGER :: N, Ny, Nz, OUT_NUM
@@ -141,7 +141,7 @@
             IMPLICIT NONE
 
             INTEGER,INTENT(IN) :: N
-            REAL(KIND=8),INTENT(OUT) :: A(N,N)
+            REAL(KIND=8) :: A(N,N)
             REAL(KIND=8),INTENT(IN) :: R(N,N)
 
             INTEGER :: i,j,k
@@ -379,8 +379,7 @@
             INTEGER :: it
             REAL(KIND=8) :: Y_start, Y_end, Z_start, Z_end,                     &
                             time_sta, time_end
-            REAL(KIND=8) :: INT_X(1:N), INT_Y(1:N), INT_Z(1:N), INT_T(1:N),     &
-                            tmp(1:3)
+            REAL(KIND=8) :: INT_X(1:N), INT_Y(1:N), INT_Z(1:N), tmp(1:3)
 
             WRITE(*,*) '----------------------------------------------------'
             WRITE(*,*) '            EDDY SETTING PROCESS STARTED            '
@@ -400,7 +399,6 @@
             CALL RANDOM_NUMBER(INT_X)
             CALL RANDOM_NUMBER(INT_Y)
             CALL RANDOM_NUMBER(INT_Z)
-            CALL RANDOM_NUMBER(INT_T)
 
             DO it = 1,N
               SEM_EDDY(it)%eddy_num = it
@@ -414,7 +412,6 @@
               SEM_EDDY(it)%X_int = INTENSITY_det(INT_X(it)-0.5)
               SEM_EDDY(it)%Y_int = INTENSITY_det(INT_Y(it)-0.5)
               SEM_EDDY(it)%Z_int = INTENSITY_det(INT_Z(it)-0.5)
-              SEM_EDDY(it)%T_int = INTENSITY_det(INT_T(it)-0.5)
             END DO
 
             CALL CPU_TIME(time_end)
@@ -442,13 +439,7 @@
             INTEGER :: it,j,k
             REAL(KIND=8) :: x0, y0, z0, f
 
-            U_INLET(1:Ny,1:Nz) = 0.0
-            V_INLET(1:Ny,1:Nz) = 0.0
-            W_INLET(1:Ny,1:Nz) = 0.0
-            T_INLET(1:Ny,1:Nz) = 0.0
-
             !$OMP PARALLEL DO private(k,j,it,x0,y0,z0,f)
-
             DO k = 1,Nz
               DO j = 1,Ny
 
@@ -479,7 +470,7 @@
 
                     T_INLET(j,k) = T_INLET(j,k) +                               &
                                   sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
-                                  SEM_EDDY(it)%T_int*f
+                                  SEM_EDDY(it)%Z_int*f
                   END IF
                 END DO
 
@@ -513,19 +504,12 @@
             REAL(KIND=8) :: R_loc(4,4), A(4,4),                                 &
                             u_ins(4,1), u_mean(4,1), u_fluc(4,1), u_tmp(4,1)
 
-            U_COMB(1:Ny,1:Nz) = 0.0
-            V_COMB(1:Ny,1:Nz) = 0.0
-            W_COMB(1:Ny,1:Nz) = 0.0
-            T_COMB(1:Ny,1:Nz) = 0.0
-
             DO k = 1,Nz
               DO j = 1,Ny
                 A(1:4,1:4)     = 0.0
                 R_loc(1:4,1:4) = 0.0
                 u_ins(1:4,1)   = 0.0
                 u_fluc(1:4,1)  = 0.0
-                u_mean(1:4,1)  = 0.0
-                u_tmp(1:4,1)  = 0.0
 
                 U_mean(1:4,1) = (/U_READ(j,k),V_READ(j,k),W_READ(j,k),T_READ(j,k)/)
                 u_tmp(1:4,1)  = (/U_INLET(j,k),V_INLET(j,k),                    &
