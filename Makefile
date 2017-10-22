@@ -2,8 +2,7 @@ F90=ifort
 FCFLAGS=-O3 -qopenmp
 
 TARGET= SEM_PROCESS
-OBJECT= math_module.o IO_module.o flow_module.o SEM_module.o main.o SEM_write.o\
-		    SEM_statistics.o
+OBJECT= math_module.o IO_module.o flow_module.o SEM_module.o main.o SEM_write.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)
