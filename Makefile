@@ -3,7 +3,7 @@ FCFLAGS=-O3 -qopenmp
 
 TARGET= SEM_PROCESS
 OBJECT= math_module.o IO_module.o flow_module.o SEM_module.o main.o SEM_write.o\
-		    SEM_convection.o SEM_statistics.o
+		    SEM_statistics.o
 
 all : $(TARGET)
 $(TARGET) : $(OBJECT)
