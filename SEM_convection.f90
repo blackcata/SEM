@@ -20,9 +20,9 @@
               ONLY : INTENSITY_det
 
             IMPLICIT NONE
-            INTRINSIC :: sqrt, abs
+            INTRINSIC :: sqrt, abs, SUM
 
-            INTEGER :: it,j,k, tt
+            INTEGER :: it
             REAL(KIND=8) :: Y_start, Y_end, Z_start, Z_end, &
                             U_conv, V_conv, W_conv, tmp_y
             REAL(KIND=8) :: tmp(1:6)

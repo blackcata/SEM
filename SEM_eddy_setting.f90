@@ -46,7 +46,7 @@
             CALL RANDOM_NUMBER(INT_X)
             CALL RANDOM_NUMBER(INT_Y)
             CALL RANDOM_NUMBER(INT_Z)
-            CALL RANDOM_NUMBER(INT_Z)
+            CALL RANDOM_NUMBER(INT_T)
 
             DO it = 1,N
               SEM_EDDY(it)%eddy_num = it
