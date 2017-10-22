@@ -448,7 +448,6 @@
             T_INLET(1:Ny,1:Nz) = 0.0
 
             !$OMP PARALLEL DO private(k,j,it,x0,y0,z0,f)
-
             DO k = 1,Nz
               DO j = 1,Ny
 
@@ -518,6 +517,7 @@
             W_COMB(1:Ny,1:Nz) = 0.0
             T_COMB(1:Ny,1:Nz) = 0.0
 
+            !$OMP PARALLEL DO private(k,j,A,R_loc,u_ins,u_fluc,u_mean,u_tmp)
             DO k = 1,Nz
               DO j = 1,Ny
                 A(1:4,1:4)     = 0.0
@@ -525,7 +525,7 @@
                 u_ins(1:4,1)   = 0.0
                 u_fluc(1:4,1)  = 0.0
                 u_mean(1:4,1)  = 0.0
-                u_tmp(1:4,1)  = 0.0
+                u_tmp(1:4,1)   = 0.0
 
                 U_mean(1:4,1) = (/U_READ(j,k),V_READ(j,k),W_READ(j,k),T_READ(j,k)/)
                 u_tmp(1:4,1)  = (/U_INLET(j,k),V_INLET(j,k),                    &
@@ -554,6 +554,7 @@
 
               END DO
             END DO
+            !OMP END PARALLEL
 
         END SUBROUTINE COMB_SLICE
 
