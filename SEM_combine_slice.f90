@@ -23,19 +23,18 @@
             IMPLICIT NONE
             INTRINSIC :: sqrt, abs
 
-            INTEGER :: it,j,k
-            REAL(KIND=8) :: time_sta, time_end, R_loc(4,4), A(4,4),             &
+            INTEGER :: j,k
+            REAL(KIND=8) :: R_loc(4,4), A(4,4),             &
                             u_ins(4,1), u_mean(4,1), u_fluc(4,1), u_tmp(4,1)
-
-            ! WRITE(*,*) '----------------------------------------------------'
-            ! WRITE(*,*) '               COMBINE PROCESS STARTED              '
-            ! CALL CPU_TIME(time_sta)
 
             DO k = 1,Nz
               DO j = 1,Ny
+                A(1:4,1:4)     = 0.0
                 R_loc(1:4,1:4) = 0.0
                 u_ins(1:4,1)   = 0.0
                 u_fluc(1:4,1)  = 0.0
+                u_mean(1:4,1)  = 0.0
+                u_tmp(1:4,1)   = 0.0
 
                 U_mean(1:4,1) = (/U(j,k),V(j,k),W(j,k),T(j,k)/)
                 u_tmp(1:4,1)  = (/U_INLET(j,k),V_INLET(j,k),                    &
@@ -57,11 +56,5 @@
 
               END DO
             END DO
-
-            ! CALL CPU_TIME(time_end)
-            ! WRITE(*,*) '           COMBINE PROCESS IS COMPLETED             '
-            ! WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
-            ! WRITE(*,*) '----------------------------------------------------'
-            ! WRITE(*,*) ''
 
         END SUBROUTINE COMB_SLICE

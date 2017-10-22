@@ -26,6 +26,11 @@
             ! WRITE(*,*) '             FLUCTUATION PROCESS STARTED            '
             ! CALL CPU_TIME(time_sta)
 
+            U_INLET(1:Ny,1:Nz) = 0.0
+            V_INLET(1:Ny,1:Nz) = 0.0
+            W_INLET(1:Ny,1:Nz) = 0.0
+            T_INLET(1:Ny,1:Nz) = 0.0
+
             !$OMP PARALLEL DO private(k,j,it,x0,y0,z0,f)
             DO k = 1,Nz
               DO j = 1,Ny
@@ -57,7 +62,7 @@
 
                     T_INLET(j,k) = T_INLET(j,k) +                               &
                                   sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
-                                  SEM_EDDY(it)%Z_int*f
+                                  SEM_EDDY(it)%T_int*f
                   END IF
                 END DO
 

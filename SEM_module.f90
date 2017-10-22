@@ -19,7 +19,7 @@
 !               SEM_EDDY : Each eddies properties including positions,         !
 !                          intensities, length scales.                         !
 !               U,V,W,T_INLET : Stochastic components of inflow surface        !
-!               U,V,W,T_COMB  : Reconstructed compoents of inflow              !
+!               U,V,W,T_COMB  : Reconstructed components of inflow              !
 !                                                                              !
 !               U_c    : Local convection velocities                           !
 !               U_pr   : Mean profiles (U,V,W,T)                               !
@@ -40,7 +40,7 @@
             REAL(KIND=8) :: X_int     ! Eddy's X intensity
             REAL(KIND=8) :: Y_int     ! Eddy's Y intensity
             REAL(KIND=8) :: Z_int     ! Eddy's Z intensity
-            REAL(KIND=8) :: T_int     ! Eddy's Z intensity
+            REAL(KIND=8) :: T_int     ! Eddy's T intensity
           END TYPE EDDY_CHAR
 
           INTEGER :: N, Ny, Nz, Nt, OUT_NUM
@@ -78,7 +78,7 @@
             IMPLICIT NONE
 
             INTEGER,INTENT(IN) :: N
-            REAL(KIND=8) :: A(N,N)
+            REAL(KIND=8),INTENT(OUT) :: A(N,N)
             REAL(KIND=8),INTENT(IN) :: R(N,N)
 
             INTEGER :: i,j,k

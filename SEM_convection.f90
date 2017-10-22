@@ -22,14 +22,10 @@
             IMPLICIT NONE
             INTRINSIC :: sqrt, abs
 
-            INTEGER :: it,j,k
-            REAL(KIND=8) :: time_sta, time_end, Y_start, Y_end, Z_start, Z_end, &
+            INTEGER :: it
+            REAL(KIND=8) :: Y_start, Y_end, Z_start, Z_end, &
                             U_conv, V_conv, W_conv, tmp_z
             REAL(KIND=8) :: tmp(1:6)
-
-            ! WRITE(*,*) '----------------------------------------------------'
-            ! WRITE(*,*) '             CONVECTION PROCESS STARTED             '
-            ! CALL CPU_TIME(time_sta)
 
             Y_start = Y(1) - SIGMA
             Y_end   = Y(Ny) + SIGMA
@@ -81,11 +77,5 @@
               END IF
 
             END DO
-
-            ! CALL CPU_TIME(time_end)
-            ! WRITE(*,*) '           CONVECTION PROCESS IS COMPLETED          '
-            ! WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
-            ! WRITE(*,*) '----------------------------------------------------'
-            ! WRITE(*,*) ''
 
         END SUBROUTINE CONVECT_EDDY
