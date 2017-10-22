@@ -22,9 +22,9 @@
             IMPLICIT NONE
             INTRINSIC :: sqrt, abs
 
-            INTEGER :: it
+            INTEGER :: it,j,k, tt
             REAL(KIND=8) :: Y_start, Y_end, Z_start, Z_end, &
-                            U_conv, V_conv, W_conv, tmp_z
+                            U_conv, V_conv, W_conv, tmp_y
             REAL(KIND=8) :: tmp(1:6)
 
             Y_start = Y(1) - SIGMA
@@ -46,8 +46,8 @@
 
               IF ( (SEM_EDDY(it)%X_pos-(-SIGMA))*                               &
                    (SEM_EDDY(it)%X_pos-(SIGMA)) > 0 .OR.                        &
-                   (SEM_EDDY(it)%Y_pos - Y_start)*                              &
-                   (SEM_EDDY(it)%Y_pos - Y_end) > 0 ) THEN
+                   (SEM_EDDY(it)%Z_pos - Z_start)*                              &
+                   (SEM_EDDY(it)%Z_pos - Z_end) > 0 ) THEN
 
                    SEM_EDDY(it)%eddy_len = SIGMA
                    SEM_EDDY(it)%X_pos = - SIGMA
@@ -66,14 +66,14 @@
               !----------------------------------------------------------------!
               !                 Periodic boundary conditions                   !
               !----------------------------------------------------------------!
-              IF ( SEM_EDDY(it)%Z_pos < Z_start ) THEN
-                tmp_z = Z_start - SEM_EDDY(it)%Z_pos
-                SEM_EDDY(it)%Z_pos = Z_end - tmp_z
+              IF ( SEM_EDDY(it)%Y_pos < Y_start ) THEN
+                tmp_y = Y_start - SEM_EDDY(it)%Z_pos
+                SEM_EDDY(it)%Y_pos = Y_end - tmp_y
               END IF
 
-              IF ( SEM_EDDY(it)%Z_pos > Z_end ) THEN
-                tmp_z = SEM_EDDY(it)%Z_pos - Z_end
-                SEM_EDDY(it)%Z_pos = Z_start + tmp_z
+              IF ( SEM_EDDY(it)%Y_pos > Y_end ) THEN
+                tmp_y = SEM_EDDY(it)%Z_pos - Y_end
+                SEM_EDDY(it)%Y_pos = Y_start + tmp_y
               END IF
 
             END DO

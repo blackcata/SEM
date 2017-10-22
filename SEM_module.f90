@@ -86,15 +86,17 @@
 
             DO i = 1,N
               DO j = 1,i
-                A(i,j) = R(i,j)
-
                 IF (i==j) THEN
+
+                  A(i,j) = R(i,j)
                   DO k = 1,j-1
                     A(i,j) = A(i,j) - A(j,k)**2
                   END DO
-                  A(i,j) = sqrt(abs(A(i,j)))
+                  A(i,j) = sqrt(abs(A(i,j)) + eps)
 
                 ELSE
+
+                  A(i,j) = R(i,j)
                   DO k = 1,j-1
                     A(i,j) = A(i,j) - A(i,k)*A(j,k)
                   END DO

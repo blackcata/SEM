@@ -20,41 +20,45 @@
 
             IMPLICIT NONE
             INTEGER :: it,j,k,tt
-            REAL(KIND=8) :: U_tmp(4,1:Ny), rms_tmp(8,1:Ny)
+            REAL(KIND=8) :: U_tmp(4,1:Nz), rms_tmp(10,1:Nz)
             tt = INT(time / dt)
 
-            U_tmp(1:4,1:Ny)   = 0.0
-            rms_tmp(1:8,1:Ny) = 0.0
+            U_tmp(1:4,1:Nz)   = 0.0
+            rms_tmp(1:10,1:Nz) = 0.0
 
             !$OMP PARALLEL DO private(k,j)
-            DO j = 1,Ny
-              DO k = 1,Nz
-                  U_tmp(1,j) = U_tmp(1,j) + U_COMB(j,k)
-                  U_tmp(2,j) = U_tmp(2,j) + V_COMB(j,k)
-                  U_tmp(3,j) = U_tmp(3,j) + W_COMB(j,k)
-                  U_tmp(4,j) = U_tmp(4,j) + T_COMB(j,k)
+            DO k = 1,Nz
+              DO j = 1,Ny
+                  U_tmp(1,k) = U_tmp(1,k) + U_COMB(j,k)
+                  U_tmp(2,k) = U_tmp(2,k) + V_COMB(j,k)
+                  U_tmp(3,k) = U_tmp(3,k) + W_COMB(j,k)
+                  U_tmp(4,k) = U_tmp(4,k) + T_COMB(j,k)
 
-                  rms_tmp(1,j) = rms_tmp(1,j) + (U_COMB(j,k) - U(j,k))**2
-                  rms_tmp(2,j) = rms_tmp(2,j) + (V_COMB(j,k) - V(j,k))**2
-                  rms_tmp(3,j) = rms_tmp(3,j) + (W_COMB(j,k) - W(j,k))**2
-                  rms_tmp(4,j) = rms_tmp(4,j) + (T_COMB(j,k) - T(j,k))**2
-                  rms_tmp(5,j) = rms_tmp(5,j) +                                 &
+                  rms_tmp(1,k) = rms_tmp(1,k) + (U_COMB(j,k) - U(j,k))**2
+                  rms_tmp(2,k) = rms_tmp(2,k) + (V_COMB(j,k) - V(j,k))**2
+                  rms_tmp(3,k) = rms_tmp(3,k) + (W_COMB(j,k) - W(j,k))**2
+                  rms_tmp(4,k) = rms_tmp(4,k) + (T_COMB(j,k) - T(j,k))**2
+                  rms_tmp(5,k) = rms_tmp(5,k) +                                 &
                                  (U_COMB(j,k) - U(j,k))*(V_COMB(j,k) - V(j,k))
-                  rms_tmp(6,j) = rms_tmp(6,j) +                                 &
+                  rms_tmp(6,k) = rms_tmp(6,k) +                                 &
+                                 (U_COMB(j,k) - U(j,k))*(W_COMB(j,k) - W(j,k))
+                  rms_tmp(7,k) = rms_tmp(7,k) +                                 &
+                                 (V_COMB(j,k) - V(j,k))*(W_COMB(j,k) - W(j,k))
+                  rms_tmp(8,k) = rms_tmp(8,k) +                                 &
                                  (U_COMB(j,k) - U(j,k))*(T_COMB(j,k) - T(j,k))
-                  rms_tmp(7,j) = rms_tmp(7,j) +                                 &
+                  rms_tmp(9,k) = rms_tmp(9,k) +                                 &
                                  (V_COMB(j,k) - V(j,k))*(T_COMB(j,k) - T(j,k))
-                  rms_tmp(8,j) = rms_tmp(8,j) +                                 &
+                  rms_tmp(10,k) = rms_tmp(10,k) +                                 &
                                  (W_COMB(j,k) - W(j,k))*(T_COMB(j,k) - T(j,k))
 
 
               END DO
 
-              U_tmp(1:4,j) = U_tmp(1:4,j)/Nz
-              U_pr(1:4,j)  = ( U_pr(1:4,j) * (tt - 1) + U_tmp(1:4,j) )/tt
+              U_tmp(1:4,k) = U_tmp(1:4,k)/Ny
+              U_pr(1:4,k)  = ( U_pr(1:4,k) * (tt - 1) + U_tmp(1:4,k) )/tt
 
-              rms_tmp(1:8,j) = rms_tmp(1:8,j)/Nz
-              rms_pr(1:8,j) = ( rms_pr(1:8,j) * (tt - 1) + rms_tmp(1:8,j) )/tt
+              rms_tmp(1:10,k) = rms_tmp(1:10,k)/Ny
+              rms_pr(1:10,k) = ( rms_pr(1:10,k) * (tt - 1) + rms_tmp(1:10,k) )/tt
 
             END DO
             !OMP END PARALLEL

@@ -27,13 +27,18 @@
             REAL(KIND=8) :: R_loc(4,4), A(4,4),             &
                             u_ins(4,1), u_mean(4,1), u_fluc(4,1), u_tmp(4,1)
 
+            U_COMB(1:Ny,1:Nz) = 0.0
+            V_COMB(1:Ny,1:Nz) = 0.0
+            W_COMB(1:Ny,1:Nz) = 0.0
+            T_COMB(1:Ny,1:Nz) = 0.0
+
+            !$OMP PARALLEL DO private(k,j,A,R_loc,u_ins,u_fluc,u_tmp,u_mean)
             DO k = 1,Nz
               DO j = 1,Ny
                 A(1:4,1:4)     = 0.0
                 R_loc(1:4,1:4) = 0.0
                 u_ins(1:4,1)   = 0.0
                 u_fluc(1:4,1)  = 0.0
-                u_mean(1:4,1)  = 0.0
                 u_tmp(1:4,1)   = 0.0
 
                 U_mean(1:4,1) = (/U(j,k),V(j,k),W(j,k),T(j,k)/)
@@ -56,5 +61,6 @@
 
               END DO
             END DO
+            !OMP END PARALLEL
 
         END SUBROUTINE COMB_SLICE

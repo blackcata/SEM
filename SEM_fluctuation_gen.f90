@@ -20,11 +20,7 @@
             INTRINSIC :: sqrt, abs
 
             INTEGER :: it,j,k
-            REAL(KIND=8) :: time_sta, time_end, x0, y0, z0, f
-
-            ! WRITE(*,*) '----------------------------------------------------'
-            ! WRITE(*,*) '             FLUCTUATION PROCESS STARTED            '
-            ! CALL CPU_TIME(time_sta)
+            REAL(KIND=8) ::x0, y0, z0, f
 
             U_INLET(1:Ny,1:Nz) = 0.0
             V_INLET(1:Ny,1:Nz) = 0.0
@@ -74,11 +70,5 @@
             V_INLET(1:Ny,1:Nz) = V_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
             W_INLET(1:Ny,1:Nz) = W_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
             T_INLET(1:Ny,1:Nz) = T_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
-
-            CALL CPU_TIME(time_end)
-            ! WRITE(*,*) '         FLUCTUATION PROCESS IS COMPLETED           '
-            ! WRITE(*,*) '  Total Reading time : ',time_end - time_sta,' s'
-            ! WRITE(*,*) '----------------------------------------------------'
-            ! WRITE(*,*) ''
 
         END SUBROUTINE FLUCT_GEN

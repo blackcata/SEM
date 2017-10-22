@@ -28,7 +28,7 @@
           CALL CPU_TIME(time_sta)
 
           dir_name = 'DATA'
-          file_name = 'Slice_temp.plt'
+          file_name = 'Slice_SBL.plt'
           path_name = TRIM(dir_name)//'/'//TRIM(file_name)
 
           OPEN(100,FILE=path_name,FORM='FORMATTED',STATUS='OLD')
