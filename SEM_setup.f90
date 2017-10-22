@@ -11,7 +11,7 @@
         SUBROUTINE SETUP
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, SIGMA, V_b, file_name, dir_name, OUT_NUM
+              ONLY : N, Ny, Nz, SIGMA, V_b, OUT_NUM
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, T, RS, THS, U_INLET, V_INLET, W_INLET,      &
@@ -21,13 +21,6 @@
             USE flow_module
 
             IMPLICIT NONE
-
-            !------------------------------------------------------------------!
-            !                  Make & Initialize Result folder                 !
-            !------------------------------------------------------------------!
-            dir_name  = 'RESULT'
-            CALL SYSTEM('mkdir '//TRIM(dir_name))
-            CALL SYSTEM('rm -rf ./'//TRIM(dir_name)//'/*.plt')
 
             !------------------------------------------------------------------!
             !                         Constants for SEM                        !

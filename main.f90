@@ -11,13 +11,15 @@
         PROGRAM main
           USE SEM_module
           USE flow_module
+          USE IO_module
 
           IMPLICIT NONE
           INTEGER :: it
           REAL(KIND=8) :: time_sta, time_end
 
+          CALL FOLDER_SETUP
           CALL FLOW_SETUP
-          
+
           DO it = 1,Nt
             time = it * dt
             CALL CPU_TIME(time_sta)

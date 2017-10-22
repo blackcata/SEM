@@ -12,10 +12,12 @@
         SUBROUTINE READ_DATA
 
           USE SEM_module,                                                     &
-            ONLY : N, Ny, Nz, SIGMA, V_b, file_name, dir_name, path_name
+            ONLY : N, Ny, Nz, SIGMA, V_b
 
           USE SEM_module,                                                     &
             ONLY : Y, Z, U, V, W, T, RS, THS
+
+          USE IO_module
 
           IMPLICIT NONE
 
@@ -26,10 +28,6 @@
           WRITE(*,*) '----------------------------------------------------'
           WRITE(*,*) '              READING PROCESS STARTED               '
           CALL CPU_TIME(time_sta)
-
-          dir_name = 'DATA'
-          file_name = 'Slice_SBL.plt'
-          path_name = TRIM(dir_name)//'/'//TRIM(file_name)
 
           OPEN(100,FILE=path_name,FORM='FORMATTED',STATUS='OLD')
           READ(100,*) header

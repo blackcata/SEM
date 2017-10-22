@@ -45,7 +45,6 @@
 
           INTEGER :: N, Ny, Nz, OUT_NUM
           REAL(KIND=8) :: SIGMA, V_b, time, eps
-          CHARACTER(LEN=65) :: file_name, dir_name, path_name
 
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
           REAL(KIND=8),DIMENSION(:,:),ALLOCATABLE :: U,V,W,T,                   &
@@ -156,15 +155,15 @@
 
           END SUBROUTINE
 
-  !------------------------------------------------------------------------------!
-  !                                                                              !
-  !   PROGRAM : SEM_main.f90                                                     !
-  !                                                                              !
-  !   PURPOSE : To make inflow generation by using SEM (Synthetic Eddy Method)   !
-  !                                                                              !
-  !                                                             2017.03.02 K.Noh !
-  !                                                                              !
-  !------------------------------------------------------------------------------!
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   PROGRAM : SEM_main.f90                                                     !
+!                                                                              !
+!   PURPOSE : To make inflow generation by using SEM (Synthetic Eddy Method)   !
+!                                                                              !
+!                                                             2017.03.02 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
 
           SUBROUTINE SEM_main(it)
             IMPLICIT NONE
