@@ -64,16 +64,6 @@
               MODULE PROCEDURE INTENSITY_det
             END INTERFACE INTENSITY_det
 
-            !--------Cholesky Decomposition Subrouitne
-            INTERFACE CHOL
-              MODULE PROCEDURE CHOL
-            END INTERFACE CHOL
-
-            !--------Matrix Multiplication Subrouine
-            INTERFACE MAT_MUL
-              MODULE PROCEDURE MAT_MUL
-            END INTERFACE MAT_MUL
-
             !--------SEM Main
             INTERFACE SEM_main
               MODULE PROCEDURE SEM_main
@@ -88,22 +78,22 @@
             INTERFACE READ_DATA
               MODULE PROCEDURE READ_DATA
             END INTERFACE READ_DATA
-            !
-            ! !--------Initializing eddies position and intensities
-            ! INTERFACE EDDY_SETTING
-            !   MODULE PROCEDURE EDDY_SETTING
-            ! END INTERFACE EDDY_SETTING
-            !
-            ! !--------Compose flucutuation components by combining each eddies
-            ! INTERFACE FLUCT_GEN
-            !   MODULE PROCEDURE FLUCT_GEN
-            ! END INTERFACE FLUCT_GEN
-            !
-            ! !--------Combining given mean & Reynolds stress with flucutuations
-            ! INTERFACE COMB_SLICE
-            !   MODULE PROCEDURE COMB_SLICE
-            ! END INTERFACE COMB_SLICE
-            !
+
+            !--------Initializing eddies position and intensities
+            INTERFACE EDDY_SETTING
+              MODULE PROCEDURE EDDY_SETTING
+            END INTERFACE EDDY_SETTING
+
+            !--------Compose flucutuation components by combining each eddies
+            INTERFACE FLUCT_GEN
+              MODULE PROCEDURE FLUCT_GEN
+            END INTERFACE FLUCT_GEN
+
+            !--------Combining given mean & Reynolds stress with flucutuations
+            INTERFACE COMB_SLICE
+              MODULE PROCEDURE COMB_SLICE
+            END INTERFACE COMB_SLICE
+
             ! !--------Convecting each eddies with periodic boundaery conditions
             ! INTERFACE CONVECT_EDDY
             !   MODULE PROCEDURE CONVECT_EDDY
@@ -117,6 +107,7 @@
             SAVE
 
         CONTAINS
+
           !--------------------------------------------------------------------!
           !                  Intensity determination Function                  !
           !--------------------------------------------------------------------!
@@ -130,67 +121,6 @@
               INTENSITY_det = -1
             END IF
           END FUNCTION INTENSITY_det
-
-          !--------------------------------------------------------------------!
-          !                   Cholesky Decomposition Function                  !
-          !--------------------------------------------------------------------!
-          SUBROUTINE CHOL(A,R,N)
-            IMPLICIT NONE
-
-            INTEGER,INTENT(IN) :: N
-            REAL(KIND=8),INTENT(OUT) :: A(N,N)
-            REAL(KIND=8),INTENT(IN) :: R(N,N)
-
-            INTEGER :: i,j,k
-            A(1:N,1:N) = 0.0
-
-            DO i = 1,N
-              DO j = 1,i
-                IF (i==j) THEN
-
-                  A(i,j) = R(i,j)
-                  DO k = 1,j-1
-                    A(i,j) = A(i,j) - A(j,k)**2
-                  END DO
-                  A(i,j) = sqrt(abs(A(i,j)) + eps)
-
-                ELSE
-
-                  A(i,j) = R(i,j)
-                  DO k = 1,j-1
-                    A(i,j) = A(i,j) - A(i,k)*A(j,k)
-                  END DO
-                  A(i,j) = A(i,j)/(A(j,j) + eps)
-
-                END IF
-
-              END DO
-            END DO
-
-          END SUBROUTINE
-
-          !--------------------------------------------------------------------!
-          !                   Matrix multiplication function                   !
-          !--------------------------------------------------------------------!
-          SUBROUTINE MAT_MUL(A,B,AB,Ni,Nj,Nk)
-            IMPLICIT NONE
-
-            INTEGER,INTENT(IN) :: Ni,Nj,Nk
-            REAL(KIND=8) :: AB(Ni,Nj)
-            REAL(KIND=8),INTENT(IN) :: A(Ni,Nk),B(Nk,Nj)
-
-            INTEGER :: i,j,k
-            AB(1:Ni,1:Nj) = 0.0
-
-            DO i = 1,Ni
-              DO j = 1,Nj
-                DO k = 1,Nk
-                  AB(i,j) = AB(i,j) + A(i,k)*B(k,j)
-                END DO
-              END DO
-            END DO
-
-          END SUBROUTINE
 
 !------------------------------------------------------------------------------!
 !                                                                              !
@@ -421,4 +351,133 @@
             WRITE(*,*) ''
         END SUBROUTINE EDDY_SETTING
 
-        END MODULE
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   PROGRAM : SEM_fluctuation_gen.f90                                          !
+!                                                                              !
+!   PURPOSE : Generate fluctuations without combining mean and rms data        !
+!                                                                              !
+!                                                             2017.03.03 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
+        SUBROUTINE FLUCT_GEN
+
+            IMPLICIT NONE
+            INTRINSIC :: sqrt, abs
+
+            INTEGER :: it,j,k
+            REAL(KIND=8) ::x0, y0, z0, f
+
+            U_INLET(1:Ny,1:Nz) = 0.0
+            V_INLET(1:Ny,1:Nz) = 0.0
+            W_INLET(1:Ny,1:Nz) = 0.0
+            T_INLET(1:Ny,1:Nz) = 0.0
+
+            !$OMP PARALLEL DO private(k,j,it,x0,y0,z0,f)
+            DO k = 1,Nz
+              DO j = 1,Ny
+
+                DO it = 1,N
+                  x0 = (0    - SEM_EDDY(it)%X_pos)/SEM_EDDY(it)%eddy_len
+                  y0 = (Y(j) - SEM_EDDY(it)%Y_pos)/SEM_EDDY(it)%eddy_len
+                  z0 = (Z(k) - SEM_EDDY(it)%Z_pos)/SEM_EDDY(it)%eddy_len
+
+                  !------------------------------------------------------------!
+                  !                        Shape function                      !
+                  !------------------------------------------------------------!
+                  IF ( abs(x0) <=1 .AND. abs(y0) <=1 .AND. abs(z0) <=1) THEN
+                    f = sqrt(1.5) * (1- abs(x0)) *                              &
+                        sqrt(1.5) * (1- abs(y0)) *                              &
+                        sqrt(1.5) * (1- abs(z0))
+
+                    U_INLET(j,k) = U_INLET(j,k) +                               &
+                                   sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *         &
+                                   SEM_EDDY(it)%X_int*f
+
+                    V_INLET(j,k) = V_INLET(j,k) +                               &
+                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
+                                  SEM_EDDY(it)%Y_int*f
+
+                    W_INLET(j,k) = W_INLET(j,k) +                               &
+                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
+                                  SEM_EDDY(it)%Z_int*f
+
+                    T_INLET(j,k) = T_INLET(j,k) +                               &
+                                  sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
+                                  SEM_EDDY(it)%T_int*f
+                  END IF
+                END DO
+
+              END DO
+            END DO
+            !OMP END PARALLEL
+
+            U_INLET(1:Ny,1:Nz) = U_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+            V_INLET(1:Ny,1:Nz) = V_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+            W_INLET(1:Ny,1:Nz) = W_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+            T_INLET(1:Ny,1:Nz) = T_INLET(1:Ny,1:Nz) / sqrt(REAL(N,8))
+
+        END SUBROUTINE FLUCT_GEN
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   PROGRAM : SEM_combine_slice.f90                                            !
+!                                                                              !
+!   PURPOSE : Combine slice mean,rms data with generated fluctuation variables !
+!                                                                              !
+!                                                             2017.03.03 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
+        SUBROUTINE COMB_SLICE
+
+            USE math_module
+
+            IMPLICIT NONE
+            INTRINSIC :: sqrt, abs
+
+            INTEGER :: j,k
+            REAL(KIND=8) :: R_loc(4,4), A(4,4),             &
+                            u_ins(4,1), u_mean(4,1), u_fluc(4,1), u_tmp(4,1)
+
+            U_COMB(1:Ny,1:Nz) = 0.0
+            V_COMB(1:Ny,1:Nz) = 0.0
+            W_COMB(1:Ny,1:Nz) = 0.0
+            T_COMB(1:Ny,1:Nz) = 0.0
+
+            !$OMP PARALLEL DO private(k,j,A,R_loc,u_ins,u_fluc,u_tmp,u_mean)
+            DO k = 1,Nz
+              DO j = 1,Ny
+                A(1:4,1:4)     = 0.0
+                R_loc(1:4,1:4) = 0.0
+                u_ins(1:4,1)   = 0.0
+                u_fluc(1:4,1)  = 0.0
+                u_mean(1:4,1)  = 0.0
+                u_tmp(1:4,1)   = 0.0
+
+                U_mean(1:4,1) = (/U(j,k),V(j,k),W(j,k),T(j,k)/)
+                u_tmp(1:4,1)  = (/U_INLET(j,k),V_INLET(j,k),                    &
+                                  W_INLET(j,k),T_INLET(j,k)/)
+                R_loc(1,1:4)  = (/RS(1,j,k),RS(4,j,k),RS(5,j,k),THS(2,j,k)/)
+                R_loc(2,1:4)  = (/RS(4,j,k),RS(2,j,k),RS(6,j,k),THS(3,j,k)/)
+                R_loc(3,1:4)  = (/RS(5,j,k),RS(6,j,k),RS(3,j,k),THS(4,j,k)/)
+                R_loc(4,1:4)  = (/THS(2,j,k),THS(3,j,k),THS(4,j,k),THS(1,j,k)/)
+
+                CALL CHOL(A,R_loc,4)
+                CALL MAT_MUL(A,u_tmp,u_fluc,4,1,4)
+
+                u_ins(1:4,1) = U_mean(1:4,1) + u_fluc(1:4,1)
+
+                U_COMB(j,k) = u_ins(1,1)
+                V_COMB(j,k) = u_ins(2,1)
+                W_COMB(j,k) = u_ins(3,1)
+                T_COMB(j,k) = u_ins(4,1)
+
+              END DO
+            END DO
+            !OMP END PARALLEL
+
+        END SUBROUTINE COMB_SLICE
+
+        END MODULE SEM_module
