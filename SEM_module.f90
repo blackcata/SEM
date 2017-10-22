@@ -79,6 +79,43 @@
               MODULE PROCEDURE SEM_main
             END INTERFACE SEM_main
 
+            !--------Setup variables and constants
+            INTERFACE SETUP
+              MODULE PROCEDURE SETUP
+            END INTERFACE SETUP
+
+            ! !--------Reading datas from external data
+            ! INTERFACE READ_DATA
+            !   MODULE PROCEDURE READ_DATA
+            ! END INTERFACE READ_DATA
+            !
+            ! !--------Initializing eddies position and intensities
+            ! INTERFACE EDDY_SETTING
+            !   MODULE PROCEDURE EDDY_SETTING
+            ! END INTERFACE EDDY_SETTING
+            !
+            ! !--------Compose flucutuation components by combining each eddies
+            ! INTERFACE FLUCT_GEN
+            !   MODULE PROCEDURE FLUCT_GEN
+            ! END INTERFACE FLUCT_GEN
+            !
+            ! !--------Combining given mean & Reynolds stress with flucutuations
+            ! INTERFACE COMB_SLICE
+            !   MODULE PROCEDURE COMB_SLICE
+            ! END INTERFACE COMB_SLICE
+            !
+            ! !--------Convecting each eddies with periodic boundaery conditions
+            ! INTERFACE CONVECT_EDDY
+            !   MODULE PROCEDURE CONVECT_EDDY
+            ! END INTERFACE CONVECT_EDDY
+            !
+            ! !--------Making statistics of SEM results
+            ! INTERFACE SEM_STAT
+            !   MODULE PROCEDURE SEM_STAT
+            ! END INTERFACE SEM_STAT
+
+            SAVE
+
         CONTAINS
           !--------------------------------------------------------------------!
           !                  Intensity determination Function                  !
@@ -165,21 +202,101 @@
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-          SUBROUTINE SEM_main(it)
+        SUBROUTINE SEM_main(it)
+          IMPLICIT NONE
+          INTEGER :: it
+
+          IF ( it == 1 ) THEN
+            CALL SETUP
+            CALL READ_DATA
+            CALL EDDY_SETTING
+          END IF
+
+          CALL FLUCT_GEN
+          CALL COMB_SLICE
+          CALL CONVECT_EDDY
+          CALL SEM_STAT
+
+        END SUBROUTINE SEM_main
+
+!------------------------------------------------------------------------------!
+!                                                                              !
+!   PROGRAM : SEM_setup.f90                                                    !
+!                                                                              !
+!   PURPOSE : Setup for SEM inflow generator                                   !
+!                                                                              !
+!                                                             2017.03.02 K.Noh !
+!                                                                              !
+!------------------------------------------------------------------------------!
+
+        SUBROUTINE SETUP
+
+            USE flow_module
+
             IMPLICIT NONE
-            INTEGER :: it
 
-            IF ( it == 1 ) THEN
-              CALL SETUP
-              CALL READ_DATA
-              CALL EDDY_SETTING
-            END IF
+            !------------------------------------------------------------------!
+            !                         Constants for SEM                        !
+            !------------------------------------------------------------------!
+            N  = 1000
+            Ny = 65
+            Nz = 66
 
-            CALL FLUCT_GEN
-            CALL COMB_SLICE
-            CALL CONVECT_EDDY
-            CALL SEM_STAT
+            SIGMA = 13.00
 
-          END SUBROUTINE SEM_main
+            OUT_NUM = 1
+
+            eps = 1e-8
+
+            !------------------------------------------------------------------!
+            !                         Allocate variables                       !
+            !------------------------------------------------------------------!
+            ALLOCATE( Y(1:Ny),Z(1:Nz) )
+            ALLOCATE( U(1:Ny,1:Nz), V(1:Ny,1:Nz), W(1:Ny,1:Nz), T(1:Ny,1:Nz) )
+            ALLOCATE( U_INLET(1:Ny,1:Nz),V_INLET(1:Ny,1:Nz),W_INLET(1:Ny,1:Nz) )
+            ALLOCATE( U_COMB(1:Ny,1:Nz),V_COMB(1:Ny,1:Nz),W_COMB(1:Ny,1:Nz) )
+            ALLOCATE( T_INLET(1:Ny,1:Nz), T_COMB(1:Ny,1:Nz)  )
+            ALLOCATE( RS(6,1:Ny,1:Nz), THS(4,1:Ny,1:Nz), U_c(1:Ny,1:Nz) )
+            ALLOCATE( SEM_EDDY(1:N), U_pr(4,1:Nz), rms_pr(10,1:Nz) )
+
+            !------------------------------------------------------------------!
+            !                         Initial Conditions                       !
+            !------------------------------------------------------------------!
+            Y(1:Ny) = 0.0
+            Z(1:Nz) = 0.0
+
+            U(1:Ny,1:Nz) = 0.0
+            V(1:Ny,1:Nz) = 0.0
+            W(1:Ny,1:Nz) = 0.0
+            T(1:Ny,1:Nz) = 0.0
+
+            RS(1:6,1:Ny,1:Nz) = 0.0
+            THS(1:4,1:Ny,1:Nz) = 0.0
+
+            U_INLET(1:Ny,1:Nz) = 0.0
+            V_INLET(1:Ny,1:Nz) = 0.0
+            W_INLET(1:Ny,1:Nz) = 0.0
+            T_INLET(1:Ny,1:Nz) = 0.0
+
+            U_COMB(1:Ny,1:Nz) = 0.0
+            V_COMB(1:Ny,1:Nz) = 0.0
+            W_COMB(1:Ny,1:Nz) = 0.0
+            T_COMB(1:Ny,1:Nz) = 0.0
+
+            U_c(1:Ny,1:Nz)   = 0.0
+            U_pr(1:4,1:Ny)   = 0.0
+            rms_pr(1:10,1:Ny) = 0.0
+
+            SEM_EDDY(1:N)%eddy_num = 0
+            SEM_EDDY(1:N)%eddy_len = 0.0
+            SEM_EDDY(1:N)%X_pos    = 0.0
+            SEM_EDDY(1:N)%Y_pos    = 0.0
+            SEM_EDDY(1:N)%Z_pos    = 0.0
+            SEM_EDDY(1:N)%X_int    = 0.0
+            SEM_EDDY(1:N)%Y_int    = 0.0
+            SEM_EDDY(1:N)%Z_int    = 0.0
+            SEM_EDDY(1:N)%T_int    = 0.0
+
+        END SUBROUTINE SETUP
 
         END MODULE
