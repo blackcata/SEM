@@ -11,12 +11,14 @@
         SUBROUTINE SEM_STAT
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, Nt, dt, time
+              ONLY : N, Ny, Nz, time
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, T, RS, THS,                                 &
                      SEM_EDDY, U_INLET, V_INLET, W_INLET,                       &
                      U_COMB, V_COMB, W_COMB, T_COMB, T_INLET, U_c, U_pr, rms_pr
+
+            USE flow_module
 
             IMPLICIT NONE
             INTEGER :: it,j,k,tt

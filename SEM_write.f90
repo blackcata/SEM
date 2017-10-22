@@ -9,12 +9,14 @@
 !------------------------------------------------------------------------------!
           SUBROUTINE OUTPUT
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, Nt, dt, time, file_name, dir_name, path_name
+              ONLY : N, Ny, Nz, time, file_name, dir_name, path_name
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, T, RS, THS,                                 &
                      U_INLET, V_INLET, W_INLET, T_INLET, SEM_EDDY,    &
                      U_COMB, V_COMB, W_COMB, T_COMB, U_c, U_pr, rms_pr
+
+            USE flow_module
 
               IMPLICIT NONE
               INTEGER :: it,j,k

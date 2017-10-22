@@ -43,8 +43,8 @@
             REAL(KIND=8) :: T_int     ! Eddy's T intensity
           END TYPE EDDY_CHAR
 
-          INTEGER :: N, Ny, Nz, Nt, OUT_NUM
-          REAL(KIND=8) :: dt, SIGMA, V_b, time, eps
+          INTEGER :: N, Ny, Nz, OUT_NUM
+          REAL(KIND=8) :: SIGMA, V_b, time, eps
           CHARACTER(LEN=65) :: file_name, dir_name, path_name
 
           REAL(KIND=8),DIMENSION(:),ALLOCATABLE :: Y,Z
@@ -55,6 +55,30 @@
                                                      U_pr, rms_pr, U_c
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS, THS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE  :: SEM_EDDY
+
+          !--------------------------------------------------------------------!
+          !                  Interfaces of SEM Subroutines                     !
+          !--------------------------------------------------------------------!
+
+            !--------Intensity Determination function
+            INTERFACE INTENSITY_det
+              MODULE PROCEDURE INTENSITY_det
+            END INTERFACE INTENSITY_det
+
+            !--------Cholesky Decomposition Subrouitne
+            INTERFACE CHOL
+              MODULE PROCEDURE CHOL
+            END INTERFACE CHOL
+
+            !--------Matrix Multiplication Subrouine
+            INTERFACE MAT_MUL
+              MODULE PROCEDURE MAT_MUL
+            END INTERFACE MAT_MUL
+
+            !--------SEM Main
+            INTERFACE SEM_main
+              MODULE PROCEDURE SEM_main
+            END INTERFACE SEM_main
 
         CONTAINS
           !--------------------------------------------------------------------!
@@ -131,4 +155,32 @@
             END DO
 
           END SUBROUTINE
+
+  !------------------------------------------------------------------------------!
+  !                                                                              !
+  !   PROGRAM : SEM_main.f90                                                     !
+  !                                                                              !
+  !   PURPOSE : To make inflow generation by using SEM (Synthetic Eddy Method)   !
+  !                                                                              !
+  !                                                             2017.03.02 K.Noh !
+  !                                                                              !
+  !------------------------------------------------------------------------------!
+
+          SUBROUTINE SEM_main(it)
+            IMPLICIT NONE
+            INTEGER :: it
+
+            IF ( it == 1 ) THEN
+              CALL SETUP
+              CALL READ_DATA
+              CALL EDDY_SETTING
+            END IF
+
+            CALL FLUCT_GEN
+            CALL COMB_SLICE
+            CALL CONVECT_EDDY
+            CALL SEM_STAT
+
+          END SUBROUTINE SEM_main
+
         END MODULE

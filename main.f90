@@ -8,25 +8,22 @@
 !                                                                              !
 !------------------------------------------------------------------------------!
 
-        PROGRAM SEM_main
-          USE SEM_module,                                                       &
-            ONLY : Nt, time, dt, OUT_NUM
+        PROGRAM main
+          USE SEM_module
+          USE flow_module
 
           IMPLICIT NONE
           INTEGER :: it
           REAL(KIND=8) :: time_sta, time_end
 
-          CALL SETUP
-          CALL READ_DATA
-          CALL EDDY_SETTING
-
+          CALL FLOW_SETUP
+          
           DO it = 1,Nt
             time = it * dt
             CALL CPU_TIME(time_sta)
-            CALL FLUCT_GEN
-            CALL COMB_SLICE
-            CALL CONVECT_EDDY
-            CALL SEM_STAT
+
+            CALL SEM_main(it)
+
             CALL CPU_TIME(time_end)
 
             WRITE(*,"(A,1X,I7,2X,A,F10.6,A)")                                   &
@@ -34,4 +31,4 @@
             IF( mod(it,OUT_NUM) == 0 ) CALL OUTPUT
           END DO
 
-        END PROGRAM SEM_main
+        END PROGRAM main

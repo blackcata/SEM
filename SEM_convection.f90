@@ -11,13 +11,15 @@
         SUBROUTINE CONVECT_EDDY
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, SIGMA, dt
+              ONLY : N, Ny, Nz, SIGMA
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, SEM_EDDY, U_COMB, V_COMB, W_COMB, T_COMB
 
             USE SEM_module,                                                     &
               ONLY : INTENSITY_det
+
+            USE flow_module
 
             IMPLICIT NONE
             INTRINSIC :: sqrt, abs, SUM

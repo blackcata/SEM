@@ -11,12 +11,14 @@
         SUBROUTINE SETUP
 
             USE SEM_module,                                                     &
-              ONLY : N, Ny, Nz, Nt, dt, SIGMA, V_b, file_name, dir_name, OUT_NUM
+              ONLY : N, Ny, Nz, SIGMA, V_b, file_name, dir_name, OUT_NUM
 
             USE SEM_module,                                                     &
               ONLY : Y, Z, U, V, W, T, RS, THS, U_INLET, V_INLET, W_INLET,      &
                       SEM_EDDY, U_COMB, V_COMB, W_COMB, U_pr, rms_pr, U_c,      &
                       T_INLET, T_COMB, eps
+
+            USE flow_module
 
             IMPLICIT NONE
 
@@ -34,8 +36,6 @@
             Ny = 65
             Nz = 66
 
-            Nt    = 10000
-            dt    = 2e-1
             SIGMA = 13.00
 
             OUT_NUM = 1
