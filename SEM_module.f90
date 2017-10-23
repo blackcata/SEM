@@ -161,8 +161,6 @@
 
         SUBROUTINE SETUP
 
-            USE flow_module
-
             IMPLICIT NONE
 
             !------------------------------------------------------------------!
