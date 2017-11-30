@@ -51,7 +51,7 @@
                                                      U_INLET,V_INLET,W_INLET,   &
                                                      U_COMB,V_COMB,W_COMB,      &
                                                      T_INLET, T_COMB,           &
-                                                     U_pr, rms_pr, U_c
+                                                     U_pr, rms_pr, U_c, e_COMB
           REAL(KIND=8),DIMENSION(:,:,:),ALLOCATABLE :: RS, THS
           TYPE(EDDY_CHAR),DIMENSION(:),ALLOCATABLE  :: SEM_EDDY
 
@@ -183,9 +183,9 @@
             ALLOCATE( U(1:Ny,1:Nz), V(1:Ny,1:Nz), W(1:Ny,1:Nz), T(1:Ny,1:Nz) )
             ALLOCATE( U_INLET(1:Ny,1:Nz),V_INLET(1:Ny,1:Nz),W_INLET(1:Ny,1:Nz) )
             ALLOCATE( U_COMB(1:Ny,1:Nz),V_COMB(1:Ny,1:Nz),W_COMB(1:Ny,1:Nz) )
-            ALLOCATE( T_INLET(1:Ny,1:Nz), T_COMB(1:Ny,1:Nz)  )
+            ALLOCATE( T_INLET(1:Ny,1:Nz), T_COMB(1:Ny,1:Nz), e_COMB(1:Ny,1:Nz) )
             ALLOCATE( RS(6,1:Ny,1:Nz), THS(4,1:Ny,1:Nz), U_c(1:Ny,1:Nz) )
-            ALLOCATE( SEM_EDDY(1:N), U_pr(4,1:Nz), rms_pr(10,1:Nz) )
+            ALLOCATE( SEM_EDDY(1:N), U_pr(4,1:Nz), rms_pr(11,1:Nz) )
 
             !------------------------------------------------------------------!
             !                         Initial Conditions                       !
@@ -210,10 +210,11 @@
             V_COMB(1:Ny,1:Nz) = 0.0
             W_COMB(1:Ny,1:Nz) = 0.0
             T_COMB(1:Ny,1:Nz) = 0.0
+            e_COMB(1:Ny,1:Nz) = 0.0
 
             U_c(1:Ny,1:Nz)   = 0.0
             U_pr(1:4,1:Ny)   = 0.0
-            rms_pr(1:10,1:Ny) = 0.0
+            rms_pr(1:11,1:Ny) = 0.0
 
             SEM_EDDY(1:N)%eddy_num = 0
             SEM_EDDY(1:N)%eddy_len = 0.0
@@ -472,6 +473,10 @@
                 W_COMB(j,k) = u_ins(3,1)
                 T_COMB(j,k) = u_ins(4,1)
 
+                e_COMB(j,k) = 0.5 * ( u_fluc(1,1)**2 +                          &
+                                      u_fluc(2,1)**2 +                          &
+                                      u_fluc(3,1)**2 ) 
+
               END DO
             END DO
             !OMP END PARALLEL
@@ -569,11 +574,11 @@
 
             IMPLICIT NONE
             INTEGER :: j,k,tt
-            REAL(KIND=8) :: U_tmp(4,1:Nz), rms_tmp(10,1:Nz)
+            REAL(KIND=8) :: U_tmp(4,1:Nz), rms_tmp(11,1:Nz)
             tt = INT(time / dt)
 
             U_tmp(1:4,1:Nz)   = 0.0
-            rms_tmp(1:10,1:Nz) = 0.0
+            rms_tmp(1:11,1:Nz) = 0.0
 
             !$OMP PARALLEL DO private(k,j)
             DO k = 1,Nz
@@ -600,14 +605,15 @@
                   rms_tmp(10,k) = rms_tmp(10,k) +                                 &
                                  (W_COMB(j,k) - W(j,k))*(T_COMB(j,k) - T(j,k))
 
+                  rms_tmp(11,k) = rms_tmp(11,k) + e_COMB(j,k)
 
               END DO
 
               U_tmp(1:4,k) = U_tmp(1:4,k)/Ny
               U_pr(1:4,k)  = ( U_pr(1:4,k) * (tt - 1) + U_tmp(1:4,k) )/tt
 
-              rms_tmp(1:10,k) = rms_tmp(1:10,k)/Ny
-              rms_pr(1:10,k) = ( rms_pr(1:10,k) * (tt - 1) + rms_tmp(1:10,k) )/tt
+              rms_tmp(1:11,k) = rms_tmp(1:11,k)/Ny
+              rms_pr(1:11,k)  = ( rms_pr(1:11,k) * (tt - 1) + rms_tmp(1:11,k) )/tt
 
             END DO
             !OMP END PARALLEL
