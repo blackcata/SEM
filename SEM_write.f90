@@ -30,29 +30,30 @@
               ! WRITE(*,*) '              WRITING PROCESS STARTED               '
               CALL CPU_TIME(time_sta)
               dir_name = 'RESULT'
-!               !----------------------------------------------------------------!
-!               !                       Outputs for U Slice                      !
-!               !----------------------------------------------------------------!
-!               file_name = '/U_ins.plt'
-!               path_name = TRIM(dir_name)//TRIM(file_name)
-!
-!               OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-!               WRITE(100,*) 'VARIABLES = Y,Z,U_ins,V_ins,W_ins,T_ins'
-!               WRITE(100,"(2(A,I3,2X))")' ZONE  I = ',Nz,' J = ',Ny
-!               WRITE(100,*) 'SOLUTIONTIME =',time
-!
-!               DO j = 1,Ny
-!                 DO k = 1,Nz
-!
-!                     WRITE(100,"(6F15.9)") Y(j),Z(k),                            &
-!                                           U_COMB(j,k),V_COMB(j,k),W_COMB(j,k),  &
-!                                           T_COMB(j,k)
-!
-!                 END DO
-!               END DO
-!               WRITE(100,*)
-!               CLOSE(100)
-! !
+
+              !----------------------------------------------------------------!
+              !                       Outputs for U Slice                      !
+              !----------------------------------------------------------------!
+              file_name = '/U_ins.plt'
+              path_name = TRIM(dir_name)//TRIM(file_name)
+
+              OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
+              WRITE(100,*) 'VARIABLES = Y,Z,U_ins,V_ins,W_ins,T_ins,e_ins'
+              WRITE(100,"(2(A,I3,2X))")' ZONE  I = ',Nz,' J = ',Ny
+              WRITE(100,*) 'SOLUTIONTIME =',time
+
+              DO j = 1,Ny
+                DO k = 1,Nz
+
+                    WRITE(100,"(7F15.9)") Y(j),Z(k),                            &
+                                          U_COMB(j,k),V_COMB(j,k),W_COMB(j,k),  &
+                                          T_COMB(j,k),e_COMB(j,k)
+
+                END DO
+              END DO
+              WRITE(100,*)
+              CLOSE(100)
+
               !----------------------------------------------------------------!
               !                   Outputs for U mean profiles                  !
               !----------------------------------------------------------------!
@@ -108,10 +109,10 @@
 
                     rms_mean(11,k) = rms_mean(11,k) + 0.5 * (RS(1,j,k)          &
                                                           +  RS(2,j,k)          &
-                                                           + RS(3,j,k) ) 
+                                                           + RS(3,j,k) )
                   END DO
                     rms_mean(1:11,k) = rms_mean(1:11,k)/Ny
-                    WRITE(100,"(21F15.9)") Z(k), rms_pr(1,k), rms_mean(1,k),    &
+                    WRITE(100,"(23F15.9)") Z(k), rms_pr(1,k), rms_mean(1,k),    &
                                                  rms_pr(2,k), rms_mean(2,k),    &
                                                  rms_pr(3,k), rms_mean(3,k),    &
                                                  rms_pr(4,k), rms_mean(4,k),    &
@@ -121,29 +122,29 @@
                                                  rms_pr(8,k), rms_mean(8,k),    &
                                                  rms_pr(9,k), rms_mean(9,k),    &
                                                  rms_pr(10,k), rms_mean(10,k),  &
-                                                 rms_pr(11,k), rms_mean(11,k) 
+                                                 rms_pr(11,k), rms_mean(11,k)
                 END DO
                 WRITE(100,*)
                 CLOSE(100)
               END IF
 
-              ! !----------------------------------------------------------------!
-              ! !                   Outputs for Eddy posoitions                  !
-              ! !----------------------------------------------------------------!
-              ! file_name = '/EDDY_POS.plt'
-              ! path_name = TRIM(dir_name)//TRIM(file_name)
-              !
-              ! OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
-              ! WRITE(100,*) 'VARIABLES = X,Y,Z'
-              ! WRITE(100,*) 'ZONE'
-              ! WRITE(100,*) 'SOLUTIONTIME =',time
-              !
-              ! DO it = 1,N
-              !   WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,          &
-              !                SEM_EDDY(it)%Z_pos
-              ! END DO
-              ! WRITE(100,*)
-              ! CLOSE(100)
+               !----------------------------------------------------------------!
+               !                   Outputs for Eddy posoitions                  !
+               !----------------------------------------------------------------!
+               file_name = '/EDDY_POS.plt'
+               path_name = TRIM(dir_name)//TRIM(file_name)
+
+               OPEN(100,FILE=path_name,FORM='FORMATTED',POSITION='APPEND')
+               WRITE(100,*) 'VARIABLES = X,Y,Z'
+               WRITE(100,*) 'ZONE'
+               WRITE(100,*) 'SOLUTIONTIME =',time
+
+               DO it = 1,N
+                 WRITE(100,*) SEM_EDDY(it)%X_pos*10,SEM_EDDY(it)%Y_pos,          &
+                              SEM_EDDY(it)%Z_pos
+               END DO
+               WRITE(100,*)
+               CLOSE(100)
 
               CALL CPU_TIME(time_end)
 
