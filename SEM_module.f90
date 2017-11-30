@@ -343,7 +343,7 @@
               SEM_EDDY(it)%Z_int = INTENSITY_det(INT_Z(it)-0.5)
               SEM_EDDY(it)%T_int = INTENSITY_det(INT_T(it)-0.5)
 
-              SEM_EDDY(it)%eddy_len = max(min(SIGMA,0.41*SEM_EDDY(it)%Y_pos),dz)
+              SEM_EDDY(it)%eddy_len = max(min(SIGMA,abs(0.41*SEM_EDDY(it)%Z_pos)),dz)
             END DO
 
             CALL CPU_TIME(time_end)
@@ -408,6 +408,7 @@
                     T_INLET(j,k) = T_INLET(j,k) +                               &
                                   sqrt(V_b/SEM_EDDY(it)%eddy_len**3) *          &
                                   SEM_EDDY(it)%T_int*f
+
                   END IF
                 END DO
 
@@ -518,9 +519,9 @@
 
             CALL RANDOM_SEED
 
-            U_conv = SUM(U_COMB)/(Ny*Nz)
-            V_conv = SUM(V_COMB)/(Ny*Nz)
-            W_conv = SUM(W_COMB)/(Ny*Nz)
+            U_conv = SUM(U_COMB)/REAL((Ny*Nz),8)
+            V_conv = SUM(V_COMB)/REAL((Ny*Nz),8)
+            W_conv = SUM(W_COMB)/REAL((Ny*Nz),8)
 
             DO it = 1,N
               SEM_EDDY(it)%X_pos = SEM_EDDY(it)%X_pos + U_conv*dt
@@ -542,7 +543,7 @@
                    SEM_EDDY(it)%Z_int = INTENSITY_det(tmp(5)-0.5)
                    SEM_EDDY(it)%T_int = INTENSITY_det(tmp(6)-0.5)
 
-                   SEM_EDDY(it)%eddy_len = max(min(SIGMA,0.41*SEM_EDDY(it)%Y_pos),dz)
+                   SEM_EDDY(it)%eddy_len = max(min(SIGMA,abs(0.41*SEM_EDDY(it)%Z_pos)),dz)
 
               END IF
               !----------------------------------------------------------------!
