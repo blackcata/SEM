@@ -5,6 +5,11 @@ which are called eddies. This code is extended to include not only fluid compone
 Code is modulized to apply any model easily and parallelized by OpenMP to make acceleration of compuational time.
 Also various type of fluids are tested to validate this code's performance and their results are attached on related paper below.
 
+This code's algorithm is applied to boundary layer and now sumiited to International Journal of Heat and Mass Transfer.
+
+Title: Extended Synthetic Eddy Method to Generate Inflow Data for Turbulent Thermal Boundary Layer
+Listed co-author(s): Geunwoo Oh Eugene KyungMin Noh,
+Corresponding Author: Jungil Choi
 
 ### 1. Tested fluid 
 Each tested datas are saved at DATA folder. 
@@ -52,4 +57,5 @@ Each codes consists of each subroutine and module and detail explanation of code
     
 'main.f90' and 'flow_module.f90' contents has to be replaced by flow solver properties and codes to 'SEM_module.f90' to applied this SEM.
 After validation of the fluid data which want to test, remove SEM_STAT and SEM_write subroutine.
+  
   
