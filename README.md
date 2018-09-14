@@ -5,7 +5,7 @@ which are called eddies. This code is extended to include not only fluid compone
 Code is modulized to apply any model easily and parallelized by OpenMP to make acceleration of compuational time.
 Also various type of fluids are tested to validate this code's performance and their results are attached on related paper below.
 
-This code's algorithm is applied to boundary layer and now sumitted to the International Journal of Heat and Mass Transfer.
+This code's algorithm is applied to boundary layer and sumitted to the International Journal of Heat and Mass Transfer.
 
 #### Title: Extended Synthetic Eddy Method to Generate Inflow Data for Turbulent Thermal Boundary Layer
 - Listed co-author(s): Geunwoo Oh and Kyung Min Noh
