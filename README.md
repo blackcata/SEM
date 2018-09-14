@@ -8,8 +8,8 @@ Also various type of fluids are tested to validate this code's performance and t
 This code's algorithm is applied to boundary layer and now sumited to International Journal of Heat and Mass Transfer.
 
 #### Title: Extended Synthetic Eddy Method to Generate Inflow Data for Turbulent Thermal Boundary Layer
-#### Listed co-author(s): Geunwoo Oh and Kyung Min Noh
-#### Corresponding Author: Jungil Choi
+Listed co-author(s): Geunwoo Oh and Kyung Min Noh
+Corresponding Author: Jungil Choi
 
 ### 1. Tested fluid 
 Each tested datas are saved at DATA folder. 
